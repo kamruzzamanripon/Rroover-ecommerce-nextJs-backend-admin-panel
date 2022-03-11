@@ -1,11 +1,15 @@
+import React from 'react';
 import Category from '../components/Category';
 import Layout from '../components/layout/Layout';
 
 
-export default function categoryPage() {
+const  categoryPage = ()=> {
+  
   return (
     <Layout title='Category'>
         <Category />
     </Layout>
   )
 }
+
+export default categoryPage

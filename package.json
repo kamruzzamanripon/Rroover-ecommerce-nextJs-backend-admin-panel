@@ -10,13 +10,18 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@reduxjs/toolkit": "^1.8.0",
+    "axios": "^0.26.1",
     "next": "12.1.0",
+    "next-redux-wrapper": "^7.0.5",
     "rc-table": "^7.23.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-js-pagination": "^3.0.3",
     "react-pure-modal": "^2.1.0",
-    "react-transition-group": "^4.4.2"
+    "react-redux": "^7.2.6",
+    "react-transition-group": "^4.4.2",
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",

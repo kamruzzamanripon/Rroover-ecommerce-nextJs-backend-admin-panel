@@ -1,9 +1,21 @@
 import Table from 'rc-table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
+import ShortViewModal from '../common/shortViewModal';
 
 
-const CategoryTable = () => {
+const CategoryTable = ({categoryData, setPageNumber}) => {
+    const [paginationInfo, setPaginationInfo] = useState();
+    const [tableData, setTableData] = useState();
+    const [modal, setModal] = useState(false);
+    const [categoryInfo, setCategoryInfo] = useState('');
+
+    const categoryInfoHandler = (data)=>{
+      setModal(true)
+      setCategoryInfo(data)
+    }
+   
+    console.log('tableData', categoryInfo)
     const columns = [
         {
           title: 'Name',
@@ -15,14 +27,14 @@ const CategoryTable = () => {
         },
         {
           title: 'Total Subcategory',
-          dataIndex: 'subCount',
+          dataIndex: 'totalSubcategory',
           key: 'subCount',
           width: 400,
           className:"text-white bg-gray-600 p-2 border-r-2 border-b-2"
         },
         {
           title: 'Total Product',
-          dataIndex: 'productCount',
+          dataIndex: 'totalProduct',
           key: 'productCount',
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2"
@@ -32,30 +44,41 @@ const CategoryTable = () => {
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
-          render: () => <><a href="#">View</a> | <a href="#">Edit</a> | <a href="#">Delete</a></>,
+          render: (data) => <>
+                          <a href="#" onClick={()=>categoryInfoHandler(data)}>View</a> | 
+                          <a href="#">Edit</a> | 
+                          <a href="#">Delete</a>
+                        </>,
           
         },
       ];
       
-      const data = [
-        { name: 'Jack', subCount: 28, productCount: 'some where' },
-        { name: 'Rose', subCount: 36, productCount: 'some where' },
-      ];
+      
+
+      useEffect(()=>{
+        setTableData(categoryData ? categoryData.data : [])
+        setPaginationInfo(categoryData ? categoryData : [])
+      },[categoryData])
 
       //Pagination
-      const [activePage, setActivePage] = useState(15)
       const handlePageChange = (pageNumber)=>{
-        setActivePage(pageNumber)
+        setPageNumber(pageNumber)
       }
 
     return (
         <>
-        <Table columns={columns} data={data}  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        <Table columns={columns} data={tableData} rowKey='id' className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        <ShortViewModal 
+          modal={modal} 
+          setModal={setModal} 
+          categoryInfo={categoryInfo}
+          mode='view'
+        />
         <Pagination
-          activePage={activePage}
-          itemsCountPerPage={10}
-          totalItemsCount={450}
-          pageRangeDisplayed={5}
+          activePage={paginationInfo?.meta?.current_page}
+          itemsCountPerPage={paginationInfo?.meta?.per_page}
+          totalItemsCount={paginationInfo?.meta ? paginationInfo?.meta?.total : 0}
+          pageRangeDisplayed={10}
           onChange={handlePageChange}
           nextPageText={'Next'}
           prevPageText={'Prev'}
