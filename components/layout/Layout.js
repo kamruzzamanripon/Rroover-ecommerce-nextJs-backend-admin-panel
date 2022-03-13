@@ -6,9 +6,9 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({children, title="Ecommerce"}) => {
      //console.log("layout", title)
-     const [sidebarOpen, setSidebarOpen] = useState(false);
+     const [mobileNavsidebar, setMobileNavsidebar] = useState(false);
      
-
+  //console.log("mobile sidebar", mobileNavsidebar)
 
   return (
     <Fragment>
@@ -21,9 +21,9 @@ const Layout = ({children, title="Ecommerce"}) => {
 
        <div className="flex bg-gray-100 min-h-screen">
         
-          <Sidebar />
+          <Sidebar mobileNavsidebar={mobileNavsidebar} />
           <div className="flex-grow text-gray-800">
-            <Header />
+            <Header mobileNavsidebar={mobileNavsidebar} setMobileNavsidebar={setMobileNavsidebar} />
               {children}
           </div>
           

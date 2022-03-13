@@ -1,9 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
+import { useDispatch } from 'react-redux';
+import { categoryAdd, categoryAll } from "../../redux/data_fetch/categoryDataFetch";
 
-const Modal = ({modal, setModal}) => {
+
+
+const Modal = ({modal, setModal, inputStatus,pageNumber}) => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const dispatch = useDispatch();
      //For Image Preview
      const [selectedImage, setSelectedImage] = useState();
 
@@ -22,9 +29,18 @@ const Modal = ({modal, setModal}) => {
     useEffect(()=>{
         if(!modal){
             setSelectedImage();
+            reset()
             }
     },[modal])
   //console.log('modal modal', modal)
+
+  const fromHandleSubmit = (data)=>{
+    dispatch(categoryAdd(data))
+    setModal(false)
+    dispatch(categoryAll(pageNumber))
+    reset()
+    //console.log(data)
+}
   return (
     <>
       <PureModal
@@ -37,15 +53,36 @@ const Modal = ({modal, setModal}) => {
         }}
   
       >
+        <form action="#"  onSubmit={handleSubmit(fromHandleSubmit)}>
+       
         <div className="flex-row space-y-3 relative">
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                 <p>Category</p>
             </div>
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
-                <input className="border-2 border-purple-600/50 w-[75%] " type="text" />
+                <input 
+                  className="border-2 border-purple-600/50 w-[75%] " 
+                  type="text" 
+                  {...register("name", {
+                    required: "required",
+                    message: "Entered value does not match email format"
+                  })}
+                />
+                {errors.name && <span className='text-red-500 font-semibold mt-1' role="alert">{errors.name.message}</span>}
             </div>
             <div className="flex justify-between">
+                <label className="font-semibold pr-2">Description</label>
+                <textarea 
+                  className="border-2 border-purple-600/50 w-[75%] " 
+                  type="text" 
+                  {...register("description")}
+                />
+            </div>
+
+
+            {inputStatus === 'subCategory' && 
+              <div className="flex justify-between">
                 <label className="font-semibold pr-2">Category</label>
                 <select className="border-2 border-purple-600/50 w-[75%] " type="text">
                     <option value="">Choose any Category</option>
@@ -53,7 +90,9 @@ const Modal = ({modal, setModal}) => {
                     <option value="">Option Two</option>
                     <option value="">Option Three</option>
                 </select>
-            </div>
+              </div>
+            }
+            
             
             <div className="flex-row justify-between">
                 <label className="font-semibold pr-2">Picture</label>
@@ -64,6 +103,7 @@ const Modal = ({modal, setModal}) => {
                     name="user[image]" 
                     multiple={true}
                     onChange={imageChange}
+                    {...register("image")}
                 />
                <div className="flex overflow-auto my-2 p-2">
                {
@@ -84,6 +124,7 @@ const Modal = ({modal, setModal}) => {
                 <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Submit</button>
             </div>
         </div>
+        </form>
       </PureModal>
       ;
     </>

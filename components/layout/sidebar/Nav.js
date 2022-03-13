@@ -68,7 +68,7 @@ const Nav = ({ sidebarOutsideClick }) => {
         </NavItem> 
 
         <NavItem
-          hrefLink='/'
+          hrefLink='/login'
           sidebarStatus={sidebarStatus}
           menuTitle="Other Menu"
           subMenu={true}

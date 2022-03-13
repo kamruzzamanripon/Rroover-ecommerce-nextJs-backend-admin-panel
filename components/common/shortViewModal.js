@@ -2,10 +2,18 @@
 import React, { useEffect, useState } from "react";
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { categoryAll, categoryDelete, categoryEdit } from "../../redux/data_fetch/categoryDataFetch";
+import { resetCategoryItem } from "../../redux/store_slices/categorySlice";
 
-const ShortViewModal = ({modal, setModal, categoryInfo, mode}) => {
-     //For Image Preview
+const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
      const [selectedImage, setSelectedImage] = useState();
+     const [name, setName] = useState();
+     const [description, setDescription] = useState();
+     const [id, setId] = useState();
+     const dispatch = useDispatch();
+     const deleteConfirm = useSelector(state=>state?.store?.category?.item?.success)
+     
 
      // This function will be triggered when the file field change
     const imageChange = (e) => {
@@ -19,6 +27,38 @@ const ShortViewModal = ({modal, setModal, categoryInfo, mode}) => {
         setSelectedImage();
     };   
 
+    const updateFormHandle = ()=>{
+        const alldata={
+            name,
+            description,
+            image: selectedImage,
+            catId:id
+        }
+        dispatch( categoryEdit( alldata) )
+        dispatch(resetCategoryItem())
+        dispatch(categoryAll(pageNumber))
+        setModal(false)
+       // console.log(alldata)
+    }
+
+    const deleteFormHandle = ()=>{
+        dispatch(categoryDelete(id))
+        dispatch(categoryAll(pageNumber))
+        setModal(false)
+    }
+
+    useEffect(()=>{
+        if(deleteConfirm === true){
+            dispatch(categoryAll(pageNumber))
+        }
+    },[deleteConfirm])
+
+    useEffect(()=>{
+        setName(dataInfo.name)
+        setDescription(dataInfo.description)
+        setId(dataInfo.id)
+    },[dataInfo] )
+
     useEffect(()=>{
         if(!modal){
             setSelectedImage();
@@ -28,7 +68,6 @@ const ShortViewModal = ({modal, setModal, categoryInfo, mode}) => {
   return (
     <>
       <PureModal
-        //header={<div className="bg-purple-600 p-2 font-bold text-lg text-center text-white">Category</div>}
         isOpen={modal}
         width="800px"
         onClose={() => {
@@ -40,19 +79,28 @@ const ShortViewModal = ({modal, setModal, categoryInfo, mode}) => {
         <div className="flex-row space-y-3 relative">
             
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
-                <p>{categoryInfo.name}</p>
+                <p>{dataInfo.name}</p>
             </div>
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
-                <p>{categoryInfo.name}</p>
+                {mode === 'view' ?
+                    <p>{dataInfo.name}</p> :
+                    <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} />
+                }
             </div>
+
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Description</label>
-                <p>{categoryInfo.description}</p>
+                {mode === 'view' ?
+                    <p>{dataInfo.description}</p> :
+                    <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                }
             </div>
             
+
+            {/* Image upload button and image Preview */}
             { mode !== 'view' &&
                 <div className="flex-row justify-between">
                     <label className="font-semibold pr-2">Picture</label>
@@ -81,13 +129,21 @@ const ShortViewModal = ({modal, setModal, categoryInfo, mode}) => {
             
 
             <div className="flex  justify-evenly">
-                <img src={!(categoryInfo.image) ?('https://via.placeholder.com/150') : (process.env.ImagebaseUrl + categoryInfo.image)}  height="150"
+                <img src={!(dataInfo.image) ?('https://via.placeholder.com/150') : (process.env.ImagebaseUrl + dataInfo.image)}  height="150"
                     width="150" alt="" className="text-center"/>
             </div>
             
-            
+            {/* Submit, Update and Delete Button */}
             <div className="flex justify-between">
-                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>{mode === 'view' ? "ok" : "Submit"}</button>
+                {mode === 'view' &&
+                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>OK</button>
+                }
+                {mode === 'edit' &&
+                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={updateFormHandle}>Update</button>
+                }
+                {mode === 'delete' &&
+                <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg" onClick={deleteFormHandle}>Delete</button>
+                }
             </div>
         </div>
       </PureModal>

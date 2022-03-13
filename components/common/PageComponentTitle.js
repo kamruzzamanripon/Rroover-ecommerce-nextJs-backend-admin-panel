@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Modal from './Modal';
+import Modal from './InputModal';
 
-const PageComponentTitle = ({title, titleDescription, buttonTitle}) => {
+const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber}) => {
     const [modal, setModal] = useState(false);
-    
+      
+       
     return (
         <>
+       
         <div className="mr-6">
           <h1 className="text-4xl font-semibold mb-2">{title}</h1>
           <h2 className="text-gray-600 ml-0.5">{titleDescription}</h2>
@@ -32,7 +34,12 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle}) => {
             </svg>
             {buttonTitle}
           </button>
-          <Modal modal={modal} setModal={setModal} />
+          <Modal 
+            modal={modal} 
+            setModal={setModal} 
+            inputStatus="category"
+            pageNumber={pageNumber}
+          />
         </div>
       </>
     );
