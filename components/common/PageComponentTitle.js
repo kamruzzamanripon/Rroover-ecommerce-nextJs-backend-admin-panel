@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Modal from './InputModal';
+import InputModal from './InputModal';
 
-const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber}) => {
+const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, modalInputStatus}) => {
     const [modal, setModal] = useState(false);
       
        
@@ -34,10 +34,10 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber}) 
             </svg>
             {buttonTitle}
           </button>
-          <Modal 
+          <InputModal 
             modal={modal} 
             setModal={setModal} 
-            inputStatus="category"
+            inputStatus={modalInputStatus}
             pageNumber={pageNumber}
           />
         </div>

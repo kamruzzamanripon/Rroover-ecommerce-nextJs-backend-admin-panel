@@ -4,7 +4,9 @@ import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { categoryAll, categoryDelete, categoryEdit } from "../../redux/data_fetch/categoryDataFetch";
+import { subCategoryAll, subCategoryDataDelete, subCategoryDataEdit } from "../../redux/data_fetch/subCategoryDataFetch";
 import { resetCategoryItem } from "../../redux/store_slices/categorySlice";
+import { resetSubCategoryItem } from "../../redux/store_slices/subCategorySlice";
 
 const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
      const [selectedImage, setSelectedImage] = useState();
@@ -14,6 +16,8 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
      const dispatch = useDispatch();
      const deleteConfirm = useSelector(state=>state?.store?.category?.item?.success)
      
+
+     //console.log('modal image', selectedImage)
 
      // This function will be triggered when the file field change
     const imageChange = (e) => {
@@ -27,6 +31,7 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
         setSelectedImage();
     };   
 
+    //upDate Form Handling function
     const updateFormHandle = ()=>{
         const alldata={
             name,
@@ -34,37 +39,66 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
             image: selectedImage,
             catId:id
         }
-        dispatch( categoryEdit( alldata) )
-        dispatch(resetCategoryItem())
-        dispatch(categoryAll(pageNumber))
+
+        //Category update dispatch
+        if(mode === 'categoryEdit'){
+            dispatch( categoryEdit( alldata) )
+            dispatch(resetCategoryItem())
+            dispatch(categoryAll(pageNumber))
+        }
+        
+        //Sub-Category update dispatch
+        if(mode === 'subCategoryEdit'){
+            dispatch( subCategoryDataEdit( alldata) )
+            dispatch(resetSubCategoryItem())
+            dispatch(subCategoryAll(pageNumber))
+        }
         setModal(false)
        // console.log(alldata)
     }
 
+    //Delete Form Handling Function
     const deleteFormHandle = ()=>{
-        dispatch(categoryDelete(id))
-        dispatch(categoryAll(pageNumber))
+        //category Delete Dispatch
+        if(mode === 'categoryDelete'){
+            dispatch(categoryDelete(id))
+            dispatch(categoryAll(pageNumber))
+        } 
+        
+        //sub-category Delete Dispatch
+        if(mode === 'subCategoryDelete'){
+            dispatch(subCategoryDataDelete(id))
+            dispatch(resetSubCategoryItem())
+            dispatch(subCategoryAll(pageNumber))
+        }
+        
         setModal(false)
     }
 
+    //if press delete button then re-call categoryAll dispatch.
     useEffect(()=>{
         if(deleteConfirm === true){
             dispatch(categoryAll(pageNumber))
         }
     },[deleteConfirm])
 
+
+    //For form data set Name, Description, Id for specifice product
     useEffect(()=>{
-        setName(dataInfo.name)
-        setDescription(dataInfo.description)
-        setId(dataInfo.id)
+        setName(dataInfo?.name)
+        setDescription(dataInfo?.description)
+        
+        //Whos data pass as props those Id
+        setId(dataInfo?.id)
     },[dataInfo] )
 
+    //Select Image Data de-select
     useEffect(()=>{
         if(!modal){
             setSelectedImage();
             }
     },[modal])
-  //console.log('modal modal', modal)
+  //console.log('modal modal', dataInfo)
   return (
     <>
       <PureModal
@@ -79,29 +113,33 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
         <div className="flex-row space-y-3 relative">
             
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
-                <p>{dataInfo.name}</p>
+                {mode === 'categoryView' || mode === 'categoryEdit'|| mode === 'categoryDelete' ? <p>{dataInfo?.name}</p> : ''}
+                {mode === 'subCategoryView' || mode === 'subCategoryEdit' || mode === 'subCategoryDelete' ? <p>{dataInfo?.name}</p> : '' } 
             </div>
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
-                {mode === 'view' ?
-                    <p>{dataInfo.name}</p> :
-                    <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} />
-                }
+                {mode === 'categoryView' || mode === 'categoryDelete' ? <p>{dataInfo.name}</p> : '' }
+                {mode === 'categoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
+                
+                {mode === 'subCategoryView' || mode === 'subCategoryDelete' ? <p>{dataInfo.name}</p> : ''}
+                {mode === 'subCategoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
             </div>
 
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Description</label>
-                {mode === 'view' ?
-                    <p>{dataInfo.description}</p> :
-                    <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/>
-                }
+                {mode === 'categoryView' || mode === 'categoryDelete'   ? <p>{dataInfo.description}</p> : ''}
+                {mode === 'categoryEdit'   && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
+                
+                {mode === 'subCategoryView'  || mode === 'subCategoryDelete' ? <p>{dataInfo.description}</p> : ''}
+                {mode === 'subCategoryEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
             </div>
             
 
             {/* Image upload button and image Preview */}
-            { mode !== 'view' &&
+            {/* { mode !== 'view'  && */}
+            {  mode === 'categoryEdit' || mode === 'subCategoryEdit' ?
                 <div className="flex-row justify-between">
                     <label className="font-semibold pr-2">Picture</label>
                     <input 
@@ -124,25 +162,25 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
                         Remove This Image
                     </button>
                 }
-                </div>
+                </div> : ''
             }
             
 
             <div className="flex  justify-evenly">
-                <img src={!(dataInfo.image) ?('https://via.placeholder.com/150') : (process.env.ImagebaseUrl + dataInfo.image)}  height="150"
+                <img src={!(dataInfo?.image) ?('https://via.placeholder.com/150') : (process.env.ImagebaseUrl + dataInfo.image)}  height="150"
                     width="150" alt="" className="text-center"/>
             </div>
             
             {/* Submit, Update and Delete Button */}
             <div className="flex justify-between">
-                {mode === 'view' &&
-                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>OK</button>
+                {mode === 'categoryView' ||  mode === 'subCategoryView' ?
+                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>OK</button> : ''
                 }
-                {mode === 'edit' &&
-                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={updateFormHandle}>Update</button>
+                {mode === 'categoryEdit' ||  mode === 'subCategoryEdit' ?
+                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={updateFormHandle}>Update</button> : ''
                 }
-                {mode === 'delete' &&
-                <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg" onClick={deleteFormHandle}>Delete</button>
+                {mode === 'categoryDelete' || mode === 'subCategoryDelete' ?
+                <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg" onClick={deleteFormHandle}>Delete</button> : ''
                 }
             </div>
         </div>

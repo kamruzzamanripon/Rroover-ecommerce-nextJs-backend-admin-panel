@@ -1,8 +1,36 @@
 import Table from 'rc-table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
+import ShortViewModal from '../common/ShortViewModal';
 
-const SubCategoryTable = () => {
+const SubCategoryTable = ({pageNumber, setPageNumber, subCategoryData}) => {
+  const [modal, setModal] = useState(false);
+  const [mode, setMode] = useState('');
+  const [singleSubCategoryInfo, setSingleSubCategoryInfo] = useState('');
+  const [tableData, setTableData] = useState();
+  const [paginationInfo, setPaginationInfo] = useState();
+
+  // Table View Click Function
+  const subCategoryInfoHandler = (data)=>{
+    setModal(true)
+    setSingleSubCategoryInfo(data)
+    setMode('subCategoryView')
+  }
+ 
+  // Table Edit Click Function
+  const subCategoryInfoEditHandler = (data)=>{
+    setModal(true)
+    setSingleSubCategoryInfo(data)
+    setMode('subCategoryEdit')
+  }
+
+  //Table Delete Click Function
+  const subCategoryInfoDeleteHandler = (data)=>{
+    setModal(true)
+    setSingleSubCategoryInfo(data)
+    setMode('subCategoryDelete')
+  }
+
     const columns = [
         {
           title: 'Name',
@@ -31,30 +59,44 @@ const SubCategoryTable = () => {
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
-          render: () => <><a href="#">View</a> | <a href="#">Edit</a> | <a href="#">Delete</a></>,
+          render: (data) => <>
+                              <a href="#" onClick={()=>subCategoryInfoHandler(data)}>View</a> | 
+                              <a href="#" onClick={()=>subCategoryInfoEditHandler(data)}>Edit</a> | 
+                              <a href="#" onClick={()=>subCategoryInfoDeleteHandler(data)}>Delete</a>
+                            </>,
           
         },
       ];
       
-      const data = [
-        { name: 'Jack', subCount: 'avc', productCount: 'some where' },
-        { name: 'Rose', subCount: 'avc', productCount: 'some where' },
-      ];
+     
+       //Data insert into table and pagination.
+       useEffect(()=>{
+        setTableData(subCategoryData ? subCategoryData.data : [])
+        setPaginationInfo(subCategoryData ? subCategoryData : [])
+      },[subCategoryData])
 
       //Pagination
-      const [activePage, setActivePage] = useState(15)
+      //const [activePage, setActivePage] = useState(15)
       const handlePageChange = (pageNumber)=>{
-        setActivePage(pageNumber)
+        setPageNumber(pageNumber)
       }
 
+      //console.log('sub cat able', )
     return (
         <>
-        <Table columns={columns} data={data}  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        <Table columns={columns} data={tableData} rowKey='id'  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        <ShortViewModal 
+          modal={modal} 
+          setModal={setModal} 
+          dataInfo={singleSubCategoryInfo}
+          mode={mode}
+          pageNumber={pageNumber}
+        />
         <Pagination
-          activePage={activePage}
-          itemsCountPerPage={10}
-          totalItemsCount={450}
-          pageRangeDisplayed={5}
+          activePage={paginationInfo?.meta?.current_page}
+          itemsCountPerPage={paginationInfo?.meta?.per_page}
+          totalItemsCount={paginationInfo?.meta ? paginationInfo?.meta?.total : 0}
+          pageRangeDisplayed={10}
           onChange={handlePageChange}
           nextPageText={'Next'}
           prevPageText={'Prev'}

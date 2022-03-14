@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { categoryAdd, categoryAll, categoryDelete, categoryEdit } from '../data_fetch/categoryDataFetch';
+import { categoryAdd, categoryAll, categoryDelete, categoryEdit, categoryAllWithoutPagination } from '../data_fetch/categoryDataFetch';
 
 const initialState = {
     loading:false,
@@ -26,6 +26,19 @@ const slice = createSlice({
           state.items = payload
       },
       [categoryAll.rejected]: (state) => {
+          state.loading = false
+      }, 
+
+
+      // Category All Without Pagination
+      [categoryAllWithoutPagination.pending]: (state) => {
+        state.loading = true
+      },
+      [categoryAllWithoutPagination.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [categoryAllWithoutPagination.rejected]: (state) => {
           state.loading = false
       }, 
       

@@ -19,7 +19,7 @@ const Layout = ({children, title="Ecommerce"}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-       <div className="flex bg-gray-100 min-h-screen">
+       <div className="flex bg-gray-100 min-h-screen relative">
         
           <Sidebar mobileNavsidebar={mobileNavsidebar} />
           <div className="flex-grow text-gray-800">
@@ -27,8 +27,8 @@ const Layout = ({children, title="Ecommerce"}) => {
               {children}
           </div>
           
-       </div> 
         <Footer />
+       </div> 
         
 
     </Fragment>

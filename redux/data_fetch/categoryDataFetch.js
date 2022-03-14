@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../utils/useAxios_auth_header';
 
-
+//Category All with pagination
 export const categoryAll =  createAsyncThunk(
     'category/categoryAll',
       async (pageNumber)=>{
@@ -12,17 +12,33 @@ export const categoryAll =  createAsyncThunk(
                 //console.log("mainslider server", res)
                 return res.data.data
             }catch(e){
-                console.log("mainslider server", e.response)
+                console.log("server Error", e.response)
             }
         }
 )
 
+//category all without pagination
+export const categoryAllWithoutPagination =  createAsyncThunk(
+    'category/categoryAll',
+      async ()=>{
+        
+            try{
+                const res = await axiosInstance().get(`${process.env.baseUrl}/category/list-without-pagination`);
+                //console.log("Hello")
+                //console.log("mainslider server", res)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e.response)
+            }
+        }
+)
 
+//category add
 export const categoryAdd =  createAsyncThunk(
     'category/categoryAdd',
       async (data)=>{
           try{
-                console.log('category axios data', data)
+                //console.log('category axios data', data)
                 const formData = new FormData();
                 formData.append('name', data.name)
                 formData.append('description', data.description)
@@ -33,12 +49,12 @@ export const categoryAdd =  createAsyncThunk(
                 //console.log("mainslider server", res)
                 return res.data
             }catch(e){
-                console.log("mainslider server", e)
+                console.log("server Error", e)
             }
         }
 )
 
-
+//category Edit
 export const categoryEdit =  createAsyncThunk(
     'category/categoryEdit',
       async (alldata)=>{
@@ -52,14 +68,14 @@ export const categoryEdit =  createAsyncThunk(
                 const res = await axiosInstance().post(`${process.env.baseUrl}/category/${alldata.catId}`, formData);
                 //console.log("Hello")
                 //console.log("mainslider server", res)
-                return res.data.data
+                return res.data
             }catch(e){
-                console.log("mainslider server", e)
+                console.log("server Error", e)
             }
         }
 )
 
-
+//category Delete
 export const categoryDelete =  createAsyncThunk(
     'category/categoryDelete',
       async (id)=>{
@@ -69,7 +85,7 @@ export const categoryDelete =  createAsyncThunk(
                 //console.log("mainslider server", res)
                 return res.data
             }catch(e){
-                console.log("mainslider server", e)
+                console.log("server Error", e)
             }
         }
 )

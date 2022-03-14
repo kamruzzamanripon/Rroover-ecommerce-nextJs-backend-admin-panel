@@ -11,22 +11,25 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
     const [categoryInfo, setCategoryInfo] = useState('');
     const [mode, setMode] = useState('');
 
+    // Table View Click Function
     const categoryInfoHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('view')
+      setMode('categoryView')
     }
 
+    // Table Edit Click Function
     const categoryInfoEditHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('edit')
+      setMode('categoryEdit')
     }
 
+    //Table Delete Click Function
     const categoryInfoDeleteHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('delete')
+      setMode('categoryDelete')
     }
    
     //console.log('tableData', categoryInfo)
@@ -68,11 +71,12 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
         },
       ];
       
+      //Table Data insert
       useEffect(()=>{
         setTableData(categoryData ? categoryData.data : [])
         setPaginationInfo(categoryData ? categoryData : [])
       },[categoryData])
-
+      //console.log(' cat able', )
       //Pagination
       const handlePageChange = (pageNumber)=>{
         setPageNumber(pageNumber)

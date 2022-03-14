@@ -9,12 +9,15 @@ import PageComponentTitle from './common/PageComponentTitle';
 const Category = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
-  const categoryData = useSelector((state)=>state.store.category.items)
-  const confirmationMessage = useSelector((state)=>state.store.category.item.message)
+  const categoryData = useSelector((state)=>state.store.category.items);
+  const confirmationMessage = useSelector((state)=>state.store.category.item.message);
+  const serverError = useSelector((state)=>state?.store?.category?.item?.errors);
   
 
   //console.log('category Data', categoryData)
   //console.log('category Data', pageNumber)
+
+  //Default Dispatch categoryAll
   useEffect(()=>{
     dispatch(categoryAll(pageNumber))
   },[pageNumber])
@@ -30,10 +33,19 @@ const Category = () => {
       toast("Category Add Successfully")
       dispatch(resetCategoryItem())
     }
-  },[confirmationMessage])
+    if(confirmationMessage === 'Category Data Edit'){
+      toast("Category Edit Successfully")
+      dispatch(resetCategoryItem())
+    }
+    if(serverError){
+      toast.error(serverError.name[0])
+      dispatch(resetCategoryItem())
+    }
+  },[confirmationMessage,serverError])
    
     return (
         <main className="p-6 sm:p-10 space-y-6">
+          {serverError && <h2 className='text-red-600 text-2xl'>{serverError.name[0]}</h2>}
          <Toaster />
         <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
             <PageComponentTitle 
@@ -41,6 +53,7 @@ const Category = () => {
                 titleDescription='List, view and edit'
                 buttonTitle='Create new Category'
                 pageNumber={pageNumber}
+                modalInputStatus='category'
             />
         </div>
 
