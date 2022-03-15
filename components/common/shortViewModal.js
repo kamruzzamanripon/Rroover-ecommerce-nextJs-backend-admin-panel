@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from 'react-redux';
+import { brandAllWithPagination, brandDataDelete, brandDataEdit } from "../../redux/data_fetch/brandDataFetch";
 import { categoryAll, categoryDelete, categoryEdit } from "../../redux/data_fetch/categoryDataFetch";
 import { subCategoryAll, subCategoryDataDelete, subCategoryDataEdit } from "../../redux/data_fetch/subCategoryDataFetch";
+import { resetBrandItem } from "../../redux/store_slices/brandSlice";
 import { resetCategoryItem } from "../../redux/store_slices/categorySlice";
 import { resetSubCategoryItem } from "../../redux/store_slices/subCategorySlice";
 
-const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
+const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
      const [selectedImage, setSelectedImage] = useState();
      const [name, setName] = useState();
      const [description, setDescription] = useState();
@@ -41,17 +43,24 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
         }
 
         //Category update dispatch
-        if(mode === 'categoryEdit'){
+        if(modalMode === 'categoryEdit'){
             dispatch( categoryEdit( alldata) )
             dispatch(resetCategoryItem())
             dispatch(categoryAll(pageNumber))
         }
         
         //Sub-Category update dispatch
-        if(mode === 'subCategoryEdit'){
+        if(modalMode === 'subCategoryEdit'){
             dispatch( subCategoryDataEdit( alldata) )
             dispatch(resetSubCategoryItem())
             dispatch(subCategoryAll(pageNumber))
+        }
+
+        //Brand update dispatch
+        if(modalMode === 'brandEdit'){
+            dispatch( brandDataEdit( alldata) )
+            dispatch(resetBrandItem())
+            dispatch(brandAllWithPagination(pageNumber))
         }
         setModal(false)
        // console.log(alldata)
@@ -60,16 +69,23 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
     //Delete Form Handling Function
     const deleteFormHandle = ()=>{
         //category Delete Dispatch
-        if(mode === 'categoryDelete'){
+        if(modalMode === 'categoryDelete'){
             dispatch(categoryDelete(id))
             dispatch(categoryAll(pageNumber))
         } 
         
         //sub-category Delete Dispatch
-        if(mode === 'subCategoryDelete'){
+        if(modalMode === 'subCategoryDelete'){
             dispatch(subCategoryDataDelete(id))
             dispatch(resetSubCategoryItem())
             dispatch(subCategoryAll(pageNumber))
+        }
+        
+        //Brand Delete Dispatch
+        if(modalMode === 'brandDelete'){
+            dispatch(brandDataDelete(id))
+            dispatch(resetBrandItem())
+            dispatch(brandAllWithPagination(pageNumber))
         }
         
         setModal(false)
@@ -113,33 +129,40 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
         <div className="flex-row space-y-3 relative">
             
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
-                {mode === 'categoryView' || mode === 'categoryEdit'|| mode === 'categoryDelete' ? <p>{dataInfo?.name}</p> : ''}
-                {mode === 'subCategoryView' || mode === 'subCategoryEdit' || mode === 'subCategoryDelete' ? <p>{dataInfo?.name}</p> : '' } 
+                {modalMode === 'categoryView' || modalMode === 'categoryEdit'|| modalMode === 'categoryDelete' ? <p>{dataInfo?.name}</p> : ''}
+                {modalMode === 'subCategoryView' || modalMode === 'subCategoryEdit' || modalMode === 'subCategoryDelete' ? <p>{dataInfo?.name}</p> : '' } 
+                {modalMode === 'brandView' || modalMode === 'brandEdit' || modalMode === 'brandDelete' ? <p>{dataInfo?.name}</p> : '' } 
             </div>
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
-                {mode === 'categoryView' || mode === 'categoryDelete' ? <p>{dataInfo.name}</p> : '' }
-                {mode === 'categoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
+                {modalMode === 'categoryView' || modalMode === 'categoryDelete' ? <p>{dataInfo.name}</p> : '' }
+                {modalMode === 'categoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
                 
-                {mode === 'subCategoryView' || mode === 'subCategoryDelete' ? <p>{dataInfo.name}</p> : ''}
-                {mode === 'subCategoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
+                {modalMode === 'subCategoryView' || modalMode === 'subCategoryDelete' ? <p>{dataInfo.name}</p> : ''}
+                {modalMode === 'subCategoryEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
+                
+                {modalMode === 'brandView' || modalMode === 'brandDelete' ? <p>{dataInfo.name}</p> : ''}
+                {modalMode === 'brandEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
             </div>
 
 
             <div className="flex justify-between">
                 <label className="font-semibold pr-2">Description</label>
-                {mode === 'categoryView' || mode === 'categoryDelete'   ? <p>{dataInfo.description}</p> : ''}
-                {mode === 'categoryEdit'   && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
+                {modalMode === 'categoryView' || modalMode === 'categoryDelete'   ? <p>{dataInfo.description}</p> : ''}
+                {modalMode === 'categoryEdit'   && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
                 
-                {mode === 'subCategoryView'  || mode === 'subCategoryDelete' ? <p>{dataInfo.description}</p> : ''}
-                {mode === 'subCategoryEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
+                {modalMode === 'subCategoryView'  || modalMode === 'subCategoryDelete' ? <p>{dataInfo.description}</p> : ''}
+                {modalMode === 'subCategoryEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
+                
+                {modalMode === 'brandView'  || modalMode === 'brandDelete' ? <p>{dataInfo.description}</p> : ''}
+                {modalMode === 'brandEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
             </div>
             
 
             {/* Image upload button and image Preview */}
-            {/* { mode !== 'view'  && */}
-            {  mode === 'categoryEdit' || mode === 'subCategoryEdit' ?
+            {/* { modalMode !== 'view'  && */}
+            {  modalMode === 'categoryEdit' || modalMode === 'subCategoryEdit' || modalMode === 'brandEdit' ?
                 <div className="flex-row justify-between">
                     <label className="font-semibold pr-2">Picture</label>
                     <input 
@@ -173,19 +196,19 @@ const ShortViewModal = ({modal, setModal, dataInfo, mode, pageNumber}) => {
             
             {/* Submit, Update and Delete Button */}
             <div className="flex justify-between">
-                {mode === 'categoryView' ||  mode === 'subCategoryView' ?
+                {modalMode === 'categoryView' ||  modalMode === 'subCategoryView' ||  modalMode === 'brandView' ?
                 <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>OK</button> : ''
                 }
-                {mode === 'categoryEdit' ||  mode === 'subCategoryEdit' ?
+                {modalMode === 'categoryEdit' ||  modalMode === 'subCategoryEdit' ||  modalMode === 'brandEdit' ?
                 <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={updateFormHandle}>Update</button> : ''
                 }
-                {mode === 'categoryDelete' || mode === 'subCategoryDelete' ?
+                {modalMode === 'categoryDelete' || modalMode === 'subCategoryDelete' || modalMode === 'brandDelete' ?
                 <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg" onClick={deleteFormHandle}>Delete</button> : ''
                 }
             </div>
         </div>
       </PureModal>
-      ;
+      
     </>
   );
 };

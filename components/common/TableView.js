@@ -1,35 +1,69 @@
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
-import ShortViewModal from '../common/ShortViewModal';
+import ShortViewModal from './ShortViewModal';
 
 
-const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
+const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
     const [paginationInfo, setPaginationInfo] = useState();
     const [tableData, setTableData] = useState();
     const [modal, setModal] = useState(false);
     const [categoryInfo, setCategoryInfo] = useState('');
-    const [mode, setMode] = useState('');
+    const [modalMode, setModalMode] = useState('');
 
+    console.log("table modal modalMode", modalMode)
+   
     // Table View Click Function
-    const categoryInfoHandler = (data)=>{
+    const viewInfoHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('categoryView')
+
+      //set modal status
+      if(tableMode === 'category'){
+        setModalMode('categoryView')
+      }
+      if(tableMode === 'subCategory'){
+        setModalMode('subCategoryView')
+      }
+      if(tableMode === 'brand'){
+        setModalMode('brandView')
+      }
     }
 
     // Table Edit Click Function
-    const categoryInfoEditHandler = (data)=>{
+    const viewInfoEditHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('categoryEdit')
+
+      //set modal status
+      if(tableMode === 'category'){
+        setModalMode('categoryEdit')
+      }
+      if(tableMode === 'subCategory'){
+        setModalMode('subCategoryEdit')
+      }
+      if(tableMode === 'brand'){
+        setModalMode('brandEdit')
+      }
+      
     }
 
     //Table Delete Click Function
-    const categoryInfoDeleteHandler = (data)=>{
+    const viewInfoDeleteHandler = (data)=>{
       setModal(true)
       setCategoryInfo(data)
-      setMode('categoryDelete')
+
+      //set modal status
+      if(tableMode === 'category'){
+        setModalMode('categoryDelete')
+      }
+      if(tableMode === 'subCategory'){
+        setModalMode('subCategoryDelete')
+      }
+      if(tableMode === 'brand'){
+        setModalMode('brandDelete')
+      }
+      
     }
    
     //console.log('tableData', categoryInfo)
@@ -63,9 +97,9 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
           render: (data) => <>
-                          <a href="#" onClick={()=>categoryInfoHandler(data)}>View</a> | 
-                          <a href="#" onClick={()=>categoryInfoEditHandler(data)}>Edit</a> | 
-                          <a href="#" onClick={()=>categoryInfoDeleteHandler(data)}>Delete</a>
+                          <a href="#" onClick={()=>viewInfoHandler(data)}>View</a> | 
+                          <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> | 
+                          <a href="#" onClick={()=>viewInfoDeleteHandler(data)}>Delete</a>
                         </>,
           
         },
@@ -73,9 +107,9 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
       
       //Table Data insert
       useEffect(()=>{
-        setTableData(categoryData ? categoryData.data : [])
-        setPaginationInfo(categoryData ? categoryData : [])
-      },[categoryData])
+        setTableData(tableDataInfo ? tableDataInfo.data : [])
+        setPaginationInfo(tableDataInfo ? tableDataInfo : [])
+      },[tableDataInfo])
       //console.log(' cat able', )
       //Pagination
       const handlePageChange = (pageNumber)=>{
@@ -89,9 +123,10 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
           modal={modal} 
           setModal={setModal} 
           dataInfo={categoryInfo}
-          mode={mode}
+          modalMode={modalMode}
           pageNumber={pageNumber}
         />
+        
         <Pagination
           activePage={paginationInfo?.meta?.current_page}
           itemsCountPerPage={paginationInfo?.meta?.per_page}
@@ -111,4 +146,4 @@ const CategoryTable = ({categoryData, setPageNumber, pageNumber}) => {
     );
 };
 
-export default CategoryTable;
+export default TableView;

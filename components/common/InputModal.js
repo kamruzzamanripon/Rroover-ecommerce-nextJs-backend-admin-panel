@@ -4,67 +4,70 @@ import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from 'react-redux';
+import { brandAllWithPagination, brandDataAdd } from "../../redux/data_fetch/brandDataFetch";
 import { categoryAdd, categoryAll, categoryAllWithoutPagination } from "../../redux/data_fetch/categoryDataFetch";
 import { subCategoryAdd, subCategoryAll } from "../../redux/data_fetch/subCategoryDataFetch";
 
 
 
 const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     const dispatch = useDispatch();
     const [selectedImage, setSelectedImage] = useState();
     const categoryList = useSelector(state=> state?.store?.category?.items)
     const serverError = useSelector((state)=>state?.store?.subcategory?.item?.errors);
-
-    //console.log("inputModal", categoryList)
-
-     // This function will be triggered when the file field change
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-        setSelectedImage(e.target.files);
-        }
-    };
-
-    // This function will be triggered when the "Remove This Image" button is clicked
-    const removeSelectedImage = () => {
-        setSelectedImage();
-    };   
-
+    //watch function show react-from-hook onChange function
+    const watchAllFields = watch();
+    //console.log("inputModal a", selectedImage)
+   
+    const fromHandleSubmit = (data, e)=>{
+      //Category form dispatch
+      if(inputStatus === 'category'){
+        dispatch(categoryAdd(data))
+        dispatch(categoryAll(pageNumber))
+      }
+  
+      //Sub-category form dispath
+      if(inputStatus === 'subCategory'){
+        dispatch(subCategoryAdd(data))
+        dispatch(subCategoryAll(pageNumber))
+      }
+      
+      //brand form dispath
+      if(inputStatus === 'brand'){
+        dispatch(brandDataAdd(data))
+        dispatch(brandAllWithPagination(pageNumber))
+      }
+      
+      setModal(false)
+      reset()
+      
+     
+    }
+   
     //if modal de-select then reset all data
     useEffect(()=>{
         if(!modal){
             setSelectedImage();
             reset()
-            }
+          }
     },[modal])
-  //console.log('modal modal', modal)
-
-
-  //Form Handle
-  const fromHandleSubmit = (data)=>{
-    //Category form dispatch
-    if(inputStatus === 'category'){
-      dispatch(categoryAdd(data))
-      dispatch(categoryAll(pageNumber))
-    }
-
-    //Sub-category form dispath
-    if(inputStatus === 'subCategory'){
-      dispatch(subCategoryAdd(data))
-      dispatch(subCategoryAll(pageNumber))
-    }
     
-    setModal(false)
-    reset()
-    //console.log(data)
-  }
-
+   // This Effect will be triggered when the file field change
+  useEffect(()=>{
+    if( watchAllFields){
+      setSelectedImage(watchAllFields.image);
+    }
+  },[watchAllFields])
+  
   //if inputStatus == subCategory than run
   useEffect(()=>{
       if(inputStatus === 'subCategory'){
         dispatch(categoryAllWithoutPagination())
       }
   },[inputStatus, serverError])
+
+  
   return (
     <>
       <PureModal
@@ -83,6 +86,7 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                 {inputStatus === 'category' && <p>Add Category</p>}
                 {inputStatus === 'subCategory' && <p>Add sub-category</p>}
+                {inputStatus === 'brand' && <p>Add Brand</p>}
                 
             </div>
             
@@ -144,8 +148,8 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
                     accept="image/*"
                     name="user[image]" 
                     multiple={false}
-                    onChange={imageChange}
                     {...register("image")}
+                   
                 />
                <div className="flex overflow-auto my-2 p-2">
                {
@@ -154,11 +158,7 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
                 
                </div>
 
-               {selectedImage && 
-                <button onClick={removeSelectedImage}  className='bg-orange-400 p-2 rounded-md text-white'>
-                    Remove This Image
-                </button>
-               }
+              
             </div>
 
 

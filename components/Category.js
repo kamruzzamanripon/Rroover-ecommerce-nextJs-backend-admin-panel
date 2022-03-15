@@ -3,8 +3,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { categoryAll } from '../redux/data_fetch/categoryDataFetch';
 import { resetCategoryItem } from '../redux/store_slices/categorySlice';
-import CategoryTable from './category/CategoryTable';
+import LoadingStatusBar from './common/LoadingStatusBar';
 import PageComponentTitle from './common/PageComponentTitle';
+import TableView from './common/TableView';
 
 const Category = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -12,6 +13,7 @@ const Category = () => {
   const categoryData = useSelector((state)=>state.store.category.items);
   const confirmationMessage = useSelector((state)=>state.store.category.item.message);
   const serverError = useSelector((state)=>state?.store?.category?.item?.errors);
+  const LoadingStatus = useSelector((state)=>state?.store?.category?.loading);
   
 
   //console.log('category Data', categoryData)
@@ -47,6 +49,9 @@ const Category = () => {
         <main className="p-6 sm:p-10 space-y-6">
           {serverError && <h2 className='text-red-600 text-2xl'>{serverError.name[0]}</h2>}
          <Toaster />
+         {LoadingStatus && 
+            <LoadingStatusBar />
+          }
         <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
             <PageComponentTitle 
                 title='Category'
@@ -60,7 +65,7 @@ const Category = () => {
         <section className="grid md:grid-cols-1 xl:grid-cols-1 gap-6">
           
           <div className="flex-grow items-center p-8 bg-white shadow rounded-lg">
-            <CategoryTable categoryData={categoryData} setPageNumber={setPageNumber} pageNumber={pageNumber}/>
+            <TableView tableDataInfo={categoryData} setPageNumber={setPageNumber} pageNumber={pageNumber} tableMode="category"/>
           </div>
                     
         </section>

@@ -12,7 +12,7 @@ export const categoryAll =  createAsyncThunk(
                 //console.log("mainslider server", res)
                 return res.data.data
             }catch(e){
-                console.log("server Error", e.response)
+                console.log("server Error", e)
             }
         }
 )
@@ -28,7 +28,7 @@ export const categoryAllWithoutPagination =  createAsyncThunk(
                 //console.log("mainslider server", res)
                 return res.data.data
             }catch(e){
-                console.log("server Error", e.response)
+                console.log("server Error", e)
             }
         }
 )

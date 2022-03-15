@@ -1,7 +1,7 @@
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
-  CollectionIcon, DuplicateIcon, FilmIcon
+  CollectionIcon, DotsCircleHorizontalIcon, DuplicateIcon
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import NavItem from "./NavItem";
@@ -68,13 +68,13 @@ const Nav = ({ sidebarOutsideClick }) => {
         </NavItem> 
 
         <NavItem
-          hrefLink='/login'
+          hrefLink='/brand'
           sidebarStatus={sidebarStatus}
-          menuTitle="Other Menu"
-          subMenu={true}
-          subMenuArray={SubCategorySubMenuArray}
+          menuTitle="Brand"
+          subMenu={false}
+          subMenuArray={null}
         >
-          <FilmIcon className="h-10" />
+          <DotsCircleHorizontalIcon className="h-10" />
         </NavItem> 
        
       </nav>
