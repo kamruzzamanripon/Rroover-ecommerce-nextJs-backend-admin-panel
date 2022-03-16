@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProductInputModal from '../product/ProductInputModal';
 import InputModal from './InputModal';
 
 const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, modalInputStatus}) => {
@@ -34,12 +35,24 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
             </svg>
             {buttonTitle}
           </button>
-          <InputModal 
-            modal={modal} 
-            setModal={setModal} 
-            inputStatus={modalInputStatus}
-            pageNumber={pageNumber}
-          />
+          {modalInputStatus === 'product' ? 
+              //Product input Modal
+              <ProductInputModal 
+                modal={modal} 
+                setModal={setModal} 
+                inputStatus={modalInputStatus}
+                pageNumber={pageNumber}
+              />
+              :
+              //Common input Modal
+              <InputModal 
+                modal={modal} 
+                setModal={setModal} 
+                inputStatus={modalInputStatus}
+                pageNumber={pageNumber}
+              />
+        }
+          
         </div>
       </>
     );
