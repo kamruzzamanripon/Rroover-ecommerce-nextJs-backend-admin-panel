@@ -17,6 +17,22 @@ export const brandAllWithPagination =  createAsyncThunk(
         }
 )
 
+//brand All with pagination
+export const brandAllWithOutPagination =  createAsyncThunk(
+    'brand/brandAllWithOutPagination',
+      async ()=>{
+        
+            try{
+                const res = await axiosInstance().get(`${process.env.baseUrl}/brand/allwithoutpagination`);
+                //console.log("Hello")
+                //console.log("mainslider server", res)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
 
 //brand Edit
 export const brandDataEdit =  createAsyncThunk(

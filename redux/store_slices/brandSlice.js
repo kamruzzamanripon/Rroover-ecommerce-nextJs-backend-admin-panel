@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { brandAllWithPagination, brandDataAdd, brandDataDelete, brandDataEdit } from "../data_fetch/brandDataFetch";
+import { brandAllWithOutPagination, brandAllWithPagination, brandDataAdd, brandDataDelete, brandDataEdit } from "../data_fetch/brandDataFetch";
 
 
 const initialState = {
@@ -18,7 +18,7 @@ const brandSlice = createSlice({
     }
   },
   extraReducers:{
-      // Brand All
+      // Brand All with Pagination
       [brandAllWithPagination.pending]: (state) => {
         state.loading = true
       },
@@ -27,6 +27,19 @@ const brandSlice = createSlice({
           state.items = payload
       },
       [brandAllWithPagination.rejected]: (state) => {
+          state.loading = false
+      },  
+      
+      
+      // Brand All With Out pagination
+      [brandAllWithOutPagination.pending]: (state) => {
+        state.loading = true
+      },
+      [brandAllWithOutPagination.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [brandAllWithOutPagination.rejected]: (state) => {
           state.loading = false
       },  
       

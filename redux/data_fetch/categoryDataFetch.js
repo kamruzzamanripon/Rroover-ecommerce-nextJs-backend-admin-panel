@@ -90,3 +90,19 @@ export const categoryDelete =  createAsyncThunk(
             }
         }
 )
+
+
+//category Single By Id
+export const categorySingle =  createAsyncThunk(
+    'category/categorySingle',
+      async (id)=>{
+            try{
+                const res = await axiosInstance().get(`${process.env.baseUrl}/category/${id}`);
+                //console.log("Hello")
+                //console.log("mainslider server", res)
+                return res.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)

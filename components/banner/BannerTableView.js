@@ -19,15 +19,6 @@ const BannerTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) 
       setTableSingleColumnData(data)
 
       //set modal status
-      if(tableMode === 'category'){
-        setModalMode('categoryView')
-      }
-      if(tableMode === 'subCategory'){
-        setModalMode('subCategoryView')
-      }
-      if(tableMode === 'brand'){
-        setModalMode('brandView')
-      }
       if(tableMode === 'banner'){
         setModalMode('bannerView')
       }
@@ -39,15 +30,6 @@ const BannerTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) 
       setTableSingleColumnData(data)
 
       //set modal status
-      if(tableMode === 'category'){
-        setModalMode('categoryEdit')
-      }
-      if(tableMode === 'subCategory'){
-        setModalMode('subCategoryEdit')
-      }
-      if(tableMode === 'brand'){
-        setModalMode('brandEdit')
-      }
       if(tableMode === 'banner'){
         setModalMode('bannerEdit')
       }
@@ -60,15 +42,6 @@ const BannerTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) 
       setTableSingleColumnData(data)
 
       //set modal status
-      if(tableMode === 'category'){
-        setModalMode('categoryDelete')
-      }
-      if(tableMode === 'subCategory'){
-        setModalMode('subCategoryDelete')
-      }
-      if(tableMode === 'brand'){
-        setModalMode('brandDelete')
-      }
       if(tableMode === 'banner'){
         setModalMode('bannerDelete')
       }
@@ -93,7 +66,7 @@ const BannerTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) 
           dataIndex: 'sub_title',
           key: 'sub_title',
           width: 400,
-          className:`${tableMode === 'brand' || tableMode === 'subCategory' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`
+          className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`
         },
         {
           title: 'Image',

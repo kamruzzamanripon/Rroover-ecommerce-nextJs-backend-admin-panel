@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from "react-redux";
-import { categoryAllWithoutPagination } from "../../redux/data_fetch/categoryDataFetch";
+import { productDataAdd } from "../../redux/data_fetch/productDataFetch";
 import AttributeInformation from "./sort/AttributeInformation";
 import BasicInformation from "./sort/BasicInformation";
 import FeaturesInformation from "./sort/FeaturesInformation";
@@ -33,29 +33,26 @@ const ProductInputModal = ({ modal, setModal, inputStatus, pageNumber }) => {
 
   //console.log("inputModal a", modal)
 
+  //From Handling for Product data Add/store
   const fromHandleSubmit = (data, e) => {
-    //Category form dispatch
-    // if(inputStatus === 'category'){
-    //   dispatch(categoryAdd(data))
-    //   dispatch(categoryAll(pageNumber))
-    // }
-
-    // setModal(false)
+    dispatch(productDataAdd(data))
+    setModal(false)
     // reset()
-    console.log("product form", data);
+    //console.log("product form", data);
   };
 
   //for VideoAndImageInformation component Total form and image reset if click outside or close button.
   useEffect(() => {
     modal ? setImageModalStatus(true) : setImageModalStatus(false);
   }, [modal]);
-
-  //if inputStatus == subCategory than run
+  
   useEffect(() => {
-    if (inputStatus === "subCategory") {
-      dispatch(categoryAllWithoutPagination());
+    if(!modal){
+      //reset()
     }
-  }, [inputStatus, serverError]);
+  }, [modal]);
+
+  
 
   return (
     <>
@@ -77,7 +74,7 @@ const ProductInputModal = ({ modal, setModal, inputStatus, pageNumber }) => {
             <BasicInformation register={register} errors={errors} />
 
             {/* Product Specific Information      */}
-            <SpecificInformation register={register} errors={errors} />
+            <SpecificInformation register={register} errors={errors} watchAllFields={watchAllFields}/>
 
             {/* Product Attribute Information      */}
             <AttributeInformation register={register} errors={errors} />
