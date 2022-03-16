@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from 'react-redux';
+import { bannerAllWithPagination, bannerDelete, bannerEdit } from "../../redux/data_fetch/bannerDataFetch";
 import { brandAllWithPagination, brandDataDelete, brandDataEdit } from "../../redux/data_fetch/brandDataFetch";
 import { categoryAll, categoryDelete, categoryEdit } from "../../redux/data_fetch/categoryDataFetch";
 import { subCategoryAll, subCategoryDataDelete, subCategoryDataEdit } from "../../redux/data_fetch/subCategoryDataFetch";
+import { resetBannerItem } from "../../redux/store_slices/bannerSlice";
 import { resetBrandItem } from "../../redux/store_slices/brandSlice";
 import { resetCategoryItem } from "../../redux/store_slices/categorySlice";
 import { resetSubCategoryItem } from "../../redux/store_slices/subCategorySlice";
@@ -19,7 +21,7 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
      const deleteConfirm = useSelector(state=>state?.store?.category?.item?.success)
      
 
-     //console.log('modal image', selectedImage)
+     //console.log('modal image', modalMode)
 
      // This function will be triggered when the file field change
     const imageChange = (e) => {
@@ -39,7 +41,7 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
             name,
             description,
             image: selectedImage,
-            catId:id
+            Id:id
         }
 
         //Category update dispatch
@@ -62,8 +64,17 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
             dispatch(resetBrandItem())
             dispatch(brandAllWithPagination(pageNumber))
         }
+        
+        //Banner update dispatch
+        if(modalMode === 'bannerEdit'){
+            dispatch( bannerEdit( alldata) )
+            dispatch(resetBannerItem())
+            dispatch(bannerAllWithPagination(pageNumber))
+        }
         setModal(false)
-       // console.log(alldata)
+       
+       
+        // console.log(alldata)
     }
 
     //Delete Form Handling Function
@@ -88,6 +99,13 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
             dispatch(brandAllWithPagination(pageNumber))
         }
         
+        //Banner Delete Dispatch
+        if(modalMode === 'bannerDelete'){
+            dispatch(bannerDelete(id))
+            dispatch(resetBannerItem())
+            dispatch(bannerAllWithPagination(pageNumber))
+        }
+        
         setModal(false)
     }
 
@@ -99,10 +117,15 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
     },[deleteConfirm])
 
 
-    //For form data set Name, Description, Id for specifice product
+    //For form data set Name, Description, Id for specifice product/Banner Edit
     useEffect(()=>{
-        setName(dataInfo?.name)
-        setDescription(dataInfo?.description)
+        if(modalMode === 'bannerEdit'){
+            setName(dataInfo?.title)
+            setDescription(dataInfo?.sub_title)
+        }else{
+            setName(dataInfo?.name)
+            setDescription(dataInfo?.description)
+        }
         
         //Whos data pass as props those Id
         setId(dataInfo?.id)
@@ -132,6 +155,7 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
                 {modalMode === 'categoryView' || modalMode === 'categoryEdit'|| modalMode === 'categoryDelete' ? <p>{dataInfo?.name}</p> : ''}
                 {modalMode === 'subCategoryView' || modalMode === 'subCategoryEdit' || modalMode === 'subCategoryDelete' ? <p>{dataInfo?.name}</p> : '' } 
                 {modalMode === 'brandView' || modalMode === 'brandEdit' || modalMode === 'brandDelete' ? <p>{dataInfo?.name}</p> : '' } 
+                {modalMode === 'bannerView' || modalMode === 'bannerEdit' || modalMode === 'bannerDelete' ? <p>{dataInfo?.title}</p> : '' } 
             </div>
 
             <div className="flex justify-between">
@@ -144,6 +168,9 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
                 
                 {modalMode === 'brandView' || modalMode === 'brandDelete' ? <p>{dataInfo.name}</p> : ''}
                 {modalMode === 'brandEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
+                
+                {modalMode === 'bannerView' || modalMode === 'bannerDelete' ? <p>{dataInfo.title}</p> : ''}
+                {modalMode === 'bannerEdit' && <input className="border-2 border-purple-600/50 w-[75%] " type="text" value={name} onChange={(e)=>setName(e.target.value)} /> }
             </div>
 
 
@@ -157,12 +184,15 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
                 
                 {modalMode === 'brandView'  || modalMode === 'brandDelete' ? <p>{dataInfo.description}</p> : ''}
                 {modalMode === 'brandEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
+                
+                {modalMode === 'bannerView'  || modalMode === 'bannerDelete' ? <p>{dataInfo.description}</p> : ''}
+                {modalMode === 'bannerEdit' && <textarea className="border-2 border-purple-600/50 w-[75%] " type="text" value={description} onChange={(e)=>setDescription(e.target.value)}/> }
             </div>
             
 
             {/* Image upload button and image Preview */}
             {/* { modalMode !== 'view'  && */}
-            {  modalMode === 'categoryEdit' || modalMode === 'subCategoryEdit' || modalMode === 'brandEdit' ?
+            {  modalMode === 'categoryEdit' || modalMode === 'subCategoryEdit' || modalMode === 'brandEdit' || modalMode === 'bannerEdit' ?
                 <div className="flex-row justify-between">
                     <label className="font-semibold pr-2">Picture</label>
                     <input 
@@ -196,13 +226,13 @@ const ShortViewModal = ({modal, setModal, dataInfo, modalMode, pageNumber}) => {
             
             {/* Submit, Update and Delete Button */}
             <div className="flex justify-between">
-                {modalMode === 'categoryView' ||  modalMode === 'subCategoryView' ||  modalMode === 'brandView' ?
+                {modalMode === 'categoryView' ||  modalMode === 'subCategoryView' ||  modalMode === 'brandView'||  modalMode === 'bannerView' ?
                 <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={()=>setModal(false)}>OK</button> : ''
                 }
-                {modalMode === 'categoryEdit' ||  modalMode === 'subCategoryEdit' ||  modalMode === 'brandEdit' ?
+                {modalMode === 'categoryEdit' ||  modalMode === 'subCategoryEdit' ||  modalMode === 'brandEdit' ||  modalMode === 'bannerEdit' ?
                 <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg" onClick={updateFormHandle}>Update</button> : ''
                 }
-                {modalMode === 'categoryDelete' || modalMode === 'subCategoryDelete' || modalMode === 'brandDelete' ?
+                {modalMode === 'categoryDelete' || modalMode === 'subCategoryDelete' || modalMode === 'brandDelete' || modalMode === 'bannerDelete' ?
                 <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg" onClick={deleteFormHandle}>Delete</button> : ''
                 }
             </div>

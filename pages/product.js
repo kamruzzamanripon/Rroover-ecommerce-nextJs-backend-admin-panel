@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import Brand from '../components/Brand';
 import Layout from '../components/layout/Layout';
+import Product from '../components/Product';
 import usePrivateRoute from '../utils/usePrivateRoute';
 
 
-const  brandPage = ()=> {
+const  productPage = ()=> {
   
   return (
     <Layout title='brand'>
-        <Brand />
+        <Product />
     </Layout>
   )
 }
 
-export default usePrivateRoute(brandPage)
+export default usePrivateRoute(productPage)

@@ -29,7 +29,7 @@ export const brandDataEdit =  createAsyncThunk(
                 formData.append('image', alldata.image ? alldata?.image[0] : '')
                 //console.log("axio data", [...formData])
 
-                const res = await axiosInstance().post(`${process.env.baseUrl}/brand/edit/${alldata.catId}`, formData);
+                const res = await axiosInstance().post(`${process.env.baseUrl}/brand/edit/${alldata.Id}`, formData);
                 //console.log("Hello")
                 //console.log("mainslider server", res)
                 return res.data

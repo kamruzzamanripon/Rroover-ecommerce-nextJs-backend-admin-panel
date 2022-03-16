@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from 'react-redux';
+import { bannerAdd, bannerAllWithPagination } from "../../redux/data_fetch/bannerDataFetch";
 import { brandAllWithPagination, brandDataAdd } from "../../redux/data_fetch/brandDataFetch";
 import { categoryAdd, categoryAll, categoryAllWithoutPagination } from "../../redux/data_fetch/categoryDataFetch";
 import { subCategoryAdd, subCategoryAll } from "../../redux/data_fetch/subCategoryDataFetch";
@@ -37,6 +38,12 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
       if(inputStatus === 'brand'){
         dispatch(brandDataAdd(data))
         dispatch(brandAllWithPagination(pageNumber))
+      }
+      
+      //Banner form dispath
+      if(inputStatus === 'banner'){
+        dispatch(bannerAdd(data))
+        dispatch(bannerAllWithPagination(pageNumber))
       }
       
       setModal(false)
@@ -87,11 +94,12 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
                 {inputStatus === 'category' && <p>Add Category</p>}
                 {inputStatus === 'subCategory' && <p>Add sub-category</p>}
                 {inputStatus === 'brand' && <p>Add Brand</p>}
+                {inputStatus === 'banner' && <p>Add Banner Item</p>}
                 
             </div>
             
             <div className="flex justify-between">
-                <label className="font-semibold pr-2">Name</label>
+                <label className="font-semibold pr-2">{inputStatus === 'banner' ? 'Banner Title' : 'Name'}</label>
                 <input 
                   className="border-2 border-purple-600/50 w-[75%] " 
                   type="text" 
@@ -100,11 +108,11 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
                   })}
                 />
             </div>
-            {errors.name && <p className="text-red-700 text-right font-semibold">Name is Required</p>}
+            {errors.name && <p className="text-red-700 text-right font-semibold">This Upper Field is Required</p>}
 
 
             <div className="flex justify-between">
-                <label className="font-semibold pr-2">Description</label>
+                <label className="font-semibold pr-2">{inputStatus === 'banner' ? 'Banner Sub-Title' : 'Description'}</label>
                 <textarea 
                   className="border-2 border-purple-600/50 w-[75%] " 
                   type="text" 

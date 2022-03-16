@@ -1,10 +1,10 @@
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
-import ShortViewModal from './ShortViewModal';
+import ShortViewModal from '../common/ShortViewModal';
 
 
-const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
+const BannerTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
     const [paginationInfo, setPaginationInfo] = useState();
     const [tableData, setTableData] = useState();
     const [modal, setModal] = useState(false);
@@ -28,6 +28,9 @@ const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
       if(tableMode === 'brand'){
         setModalMode('brandView')
       }
+      if(tableMode === 'banner'){
+        setModalMode('bannerView')
+      }
     }
 
     // Table Edit Click Function
@@ -44,6 +47,9 @@ const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
       }
       if(tableMode === 'brand'){
         setModalMode('brandEdit')
+      }
+      if(tableMode === 'banner'){
+        setModalMode('bannerEdit')
       }
       
     }
@@ -63,33 +69,41 @@ const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
       if(tableMode === 'brand'){
         setModalMode('brandDelete')
       }
+      if(tableMode === 'banner'){
+        setModalMode('bannerDelete')
+      }
       
     }
+
+  
    
     //console.log('tableData', tableSingleColumnData)
     
     const columns = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'Title',
+          dataIndex: 'title',
+          key: 'title',
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           rowClassName:"bg-black-ripon"
         },
         {
-          title: 'Total Subcategory',
-          dataIndex: 'totalSubcategory',
-          key: 'subCount',
+          title: 'Sub Title',
+          dataIndex: 'sub_title',
+          key: 'sub_title',
           width: 400,
           className:`${tableMode === 'brand' || tableMode === 'subCategory' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`
         },
         {
-          title: 'Total Product',
-          dataIndex: 'totalProduct',
-          key: 'productCount',
+          title: 'Image',
+          dataIndex: 'image',
+          key: 'image',
           width: 400,
-          className:"text-white bg-gray-800 p-2 border-r-2 border-b-2"
+          className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
+          render: (data) => <>
+                                <img src={`${process.env.ImagebaseUrl + data}`} className='w-40 text-center m-auto' />
+                            </>
         },
         {
           title: 'Operations',
@@ -146,4 +160,4 @@ const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
     );
 };
 
-export default TableView;
+export default BannerTableView;

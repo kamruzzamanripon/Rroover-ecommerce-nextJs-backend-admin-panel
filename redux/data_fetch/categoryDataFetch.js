@@ -43,6 +43,7 @@ export const categoryAdd =  createAsyncThunk(
                 formData.append('name', data.name)
                 formData.append('description', data.description)
                 formData.append('image', data.image ? data?.image[0] : '')
+                 //console.log("axio data", [...formData])
 
                 const res = await axiosInstance().post(`${process.env.baseUrl}/category/add`, formData);
                 //console.log("Hello")
@@ -65,7 +66,7 @@ export const categoryEdit =  createAsyncThunk(
                 formData.append('image', alldata.image ? alldata?.image[0] : '')
                 //console.log("axio data", [...formData])
 
-                const res = await axiosInstance().post(`${process.env.baseUrl}/category/${alldata.catId}`, formData);
+                const res = await axiosInstance().post(`${process.env.baseUrl}/category/${alldata.Id}`, formData);
                 //console.log("Hello")
                 //console.log("mainslider server", res)
                 return res.data

@@ -1,7 +1,7 @@
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
-  CollectionIcon, DotsCircleHorizontalIcon, DuplicateIcon
+  CollectionIcon, DocumentAddIcon, DotsCircleHorizontalIcon, DuplicateIcon, PuzzleIcon
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import NavItem from "./NavItem";
@@ -54,7 +54,7 @@ const Nav = ({ sidebarOutsideClick }) => {
           subMenu={false}
           subMenuArray={null}
         >
-          <CollectionIcon className="h-10" />
+          <DocumentAddIcon className="h-10" />
         </NavItem> 
 
         <NavItem
@@ -75,6 +75,26 @@ const Nav = ({ sidebarOutsideClick }) => {
           subMenuArray={null}
         >
           <DotsCircleHorizontalIcon className="h-10" />
+        </NavItem> 
+        
+        <NavItem
+          hrefLink='/banner'
+          sidebarStatus={sidebarStatus}
+          menuTitle="Banner"
+          subMenu={false}
+          subMenuArray={null}
+        >
+          <CollectionIcon className="h-10" />
+        </NavItem> 
+        
+        <NavItem
+          hrefLink='/product'
+          sidebarStatus={sidebarStatus}
+          menuTitle="Product"
+          subMenu={false}
+          subMenuArray={null}
+        >
+          <PuzzleIcon className="h-10" />
         </NavItem> 
        
       </nav>
