@@ -1,81 +1,86 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
-import ShortViewModal from '../common/ShortViewModal';
+import ProductInputModal from './ProductInputModal';
 
 
 const ProductTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
     const [paginationInfo, setPaginationInfo] = useState();
+    const [tableImagePreview, setTableImagePreview] = useState();
     const [tableData, setTableData] = useState();
     const [modal, setModal] = useState(false);
     const [tableSingleColumnData, setTableSingleColumnData] = useState('');
     const [modalMode, setModalMode] = useState('');
 
-    //console.log("table modal modalMode", modalMode)
+    console.log("table modal modalMode", tableImagePreview)
    
     // Table View Click Function
     const viewInfoHandler = (data)=>{
       setModal(true)
       setTableSingleColumnData(data)
-
-      //set modal status
-      if(tableMode === 'banner'){
-        setModalMode('bannerView')
-      }
+      setModalMode('productView')
     }
 
     // Table Edit Click Function
     const viewInfoEditHandler = (data)=>{
       setModal(true)
       setTableSingleColumnData(data)
-
-      //set modal status
-      if(tableMode === 'banner'){
-        setModalMode('bannerEdit')
-      }
-      
+      setModalMode('productEdit')
+           
     }
 
     //Table Delete Click Function
     const viewInfoDeleteHandler = (data)=>{
       setModal(true)
       setTableSingleColumnData(data)
-
-      //set modal status
-      if(tableMode === 'banner'){
-        setModalMode('bannerDelete')
-      }
+      setModalMode('productDelete')
       
     }
 
   
    
-    //console.log('tableData', tableSingleColumnData)
-    
+   
+    //Table Columns Data Show
     const columns = [
         {
-          title: 'Title',
-          dataIndex: 'title',
-          key: 'title',
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           rowClassName:"bg-black-ripon"
         },
         {
-          title: 'Sub Title',
-          dataIndex: 'sub_title',
-          key: 'sub_title',
+          title: 'Product Quantity',
+          dataIndex: 'quantity',
+          key: 'quantity',
+          width: 400,
+          className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`
+        },
+        {
+          title: 'Actual Price',
+          dataIndex: 'actual_price',
+          key: 'actual_price',
+          width: 400,
+          className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
+        },
+        {
+          title: 'Discount Price',
+          dataIndex: 'discount_price',
+          key: 'discount_price',
           width: 400,
           className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`
         },
         {
           title: 'Image',
-          dataIndex: 'image',
-          key: 'image',
+          dataIndex: 'singleImage',
+          key: 'singleImage',
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           render: (data) => <>
-                                <img src={`${process.env.ImagebaseUrl + data}`} className='w-40 text-center m-auto' />
+                               <img src={`${data ? process.env.ImagebaseUrl + data : ('https://via.placeholder.com/150') }`} className='w-40 text-center m-auto' />
                             </>
         },
         {
@@ -83,6 +88,7 @@ const ProductTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode})
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
+          width: 500,
           render: (data) => <>
                           <a href="#" onClick={()=>viewInfoHandler(data)}>View</a> | 
                           <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> | 
@@ -91,6 +97,7 @@ const ProductTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode})
           
         },
       ];
+      
       
       //Table Data insert
       useEffect(()=>{
@@ -105,14 +112,23 @@ const ProductTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode})
 
     return (
         <>
-        <Table columns={columns} data={tableData} rowKey='id' className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
-        <ShortViewModal 
+        <Table columns={columns} data={tableData} rowKey='id'  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        {/* <ShortViewModal 
           modal={modal} 
           setModal={setModal} 
           dataInfo={tableSingleColumnData}
           modalMode={modalMode}
           pageNumber={pageNumber}
-        />
+        /> */}
+
+        {/* product view, edit and Delect Modal */}
+        <ProductInputModal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalMode}
+          pageNumber={pageNumber}
+          dataInfo={tableSingleColumnData}
+        />  
         
         <Pagination
           activePage={paginationInfo?.meta?.current_page}

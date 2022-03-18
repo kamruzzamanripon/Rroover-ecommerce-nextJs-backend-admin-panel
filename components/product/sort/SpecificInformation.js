@@ -4,14 +4,14 @@ import { brandAllWithOutPagination } from "../../../redux/data_fetch/brandDataFe
 import { categoryAllWithoutPagination, categorySingle } from "../../../redux/data_fetch/categoryDataFetch";
 import InputHeadingTitle from "./InputHeadingTitle";
 
-const SpecificInformation = ({ register, errors, watchAllFields }) => {
+const SpecificInformation = ({ register, errors, watchAllFields, inputStatus, dataInfo }) => {
   const [subCategoryIdDependCatId, setSubCategoryIdDependCatId] = useState();
   const dispatch = useDispatch();
   const categoryList = useSelector((state) => state?.store?.category?.items);
   const subCategoryListByCatId = useSelector((state) => state?.store?.category?.item?.data?.subcategory);
   const brandList = useSelector((state) => state?.store?.brand?.items);
 
-  //console.log('product category list', subCategoryListByCatId)
+  //console.log('product category list', watchAllFields)
   
 
   //Default Category Dispatch
@@ -39,19 +39,26 @@ const SpecificInformation = ({ register, errors, watchAllFields }) => {
 
       <div className="flex justify-between">
         <label className="font-semibold pr-2">Category</label>
-        <select
-          className="border-2 border-purple-600/50 w-[75%] text-right"
-          {...register("category", {
-            required: "required",
-          })}
-        >
-          <option value="">Choose any Category</option>
-          {categoryList && categoryList.length > 0 && (
-            categoryList.map((category, index)=>(
-              <option value={category.id} key={index}>{category.name}</option>
-            ))
-          )}
-        </select>
+        
+        {inputStatus === 'productView' || inputStatus === 'productDelete' ? 
+                  <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.category_info.name}</label> :
+
+                  <select
+                    className="border-2 border-purple-600/50 w-[75%] text-right"
+                    defaultValue={dataInfo?.category_info?.id}
+                    {...register("category", {
+                      required: "required",
+                    })}
+                  >
+                    <option value="">Choose any Category</option>
+                    {categoryList && categoryList.length > 0 && (
+                      categoryList.map((category, index)=>(
+                        <option value={category.id} key={index}>{category.name}</option>
+                      ))
+                    )}
+                  </select>
+      } 
+
       </div>
       {errors.category && (
         <p className="text-red-700 text-right font-semibold">
@@ -59,21 +66,28 @@ const SpecificInformation = ({ register, errors, watchAllFields }) => {
         </p>
       )}
 
+
       <div className="flex justify-between">
         <label className="font-semibold pr-2">Sub-Category</label>
-        <select
-          className="border-2 border-purple-600/50 w-[75%] text-right"
-          {...register("subCateogry", {
-            required: "required",
-          })}
-        >
-          <option value="">Choose any Sub-Category</option>
-          {subCategoryListByCatId && subCategoryListByCatId.length > 0 && (
-            subCategoryListByCatId.map((subCategory, index)=>(
-              <option value={subCategory.id} key={index}>{subCategory.name}</option>
-            ))
-          )}
-        </select>
+
+        {inputStatus === 'productView' || inputStatus === 'productDelete' ? 
+                  <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.subcategory_info.name}</label> :
+
+                  <select
+                    className="border-2 border-purple-600/50 w-[75%] text-right"
+                    defaultValue={dataInfo?.subcategory_info?.id}
+                    {...register("subCateogry", {
+                      required: "required",
+                    })}
+                  >
+                    <option value="">Choose any Sub-Category</option>
+                    {subCategoryListByCatId && subCategoryListByCatId.length > 0 && (
+                      subCategoryListByCatId.map((subCategory, index)=>(
+                        <option value={subCategory.id} key={index}>{subCategory.name}</option>
+                      ))
+                    )}
+                  </select>
+        }
       </div>
       {errors.subCateogry && (
         <p className="text-red-700 text-right font-semibold">
@@ -83,19 +97,25 @@ const SpecificInformation = ({ register, errors, watchAllFields }) => {
 
       <div className="flex justify-between">
         <label className="font-semibold pr-2">Brand</label>
-        <select
-          className="border-2 border-purple-600/50 w-[75%] text-right"
-          {...register("brand", {
-            required: "required",
-          })}
-        >
-          <option value="">Choose any Brand</option>
-          {brandList && brandList.length > 0 && (
-            brandList.map((brand, index)=>(
-              <option value={brand.id} key={index}>{brand.name}</option>
-            ))
-          )}
-        </select>
+
+        {inputStatus === 'productView' || inputStatus === 'productDelete' ? 
+                  <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.brand_info.name}</label> :
+
+                  <select
+                    className="border-2 border-purple-600/50 w-[75%] text-right"
+                    defaultValue={dataInfo?.brand_info?.id}
+                    {...register("brand", {
+                      required: "required",
+                    })}
+                  >
+                    <option value="">Choose any Brand</option>
+                    {brandList && brandList.length > 0 && (
+                      brandList.map((brand, index)=>(
+                        <option value={brand.id} key={index}>{brand.name}</option>
+                      ))
+                    )}
+                  </select>
+        }
       </div>
       {errors.brand && (
         <p className="text-red-700 text-right font-semibold">

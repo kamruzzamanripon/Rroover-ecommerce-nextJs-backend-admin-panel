@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productDataAdd } from "../data_fetch/productDataFetch";
+import { productAllWithPagiantion, productDataAdd, productDataDelete, productDataEdit } from "../data_fetch/productDataFetch";
 
 const initialState = {
     loading:false,
@@ -17,6 +17,19 @@ const productSlice = createSlice({
     }
   },
   extraReducers:{
+      // Product Data All with pagination
+      [productAllWithPagiantion.pending]: (state) => {
+        state.loading = true
+      },
+      [productAllWithPagiantion.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [productAllWithPagiantion.rejected]: (state) => {
+          state.loading = false
+      }, 
+      
+      
       // Product Data Add/Store
       [productDataAdd.pending]: (state) => {
         state.loading = true
@@ -26,6 +39,32 @@ const productSlice = createSlice({
           state.item = payload
       },
       [productDataAdd.rejected]: (state) => {
+          state.loading = false
+      },  
+      
+      
+      // Product Data Edit/Update
+      [productDataEdit.pending]: (state) => {
+        state.loading = true
+      },
+      [productDataEdit.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.item = payload
+      },
+      [productDataEdit.rejected]: (state) => {
+          state.loading = false
+      },
+      
+      
+      // Product Data Delete
+      [productDataDelete.pending]: (state) => {
+        state.loading = true
+      },
+      [productDataDelete.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.item = payload
+      },
+      [productDataDelete.rejected]: (state) => {
           state.loading = false
       }, 
 

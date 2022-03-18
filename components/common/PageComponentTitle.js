@@ -35,7 +35,7 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
             </svg>
             {buttonTitle}
           </button>
-          {modalInputStatus === 'product' ? 
+          {modalInputStatus === 'productAdd' ? 
               //Product input Modal
               <ProductInputModal 
                 modal={modal} 
