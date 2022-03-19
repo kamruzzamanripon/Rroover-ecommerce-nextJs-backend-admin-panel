@@ -54,7 +54,8 @@ const Nav = ({ sidebarOutsideClick }) => {
           subMenu={false}
           subMenuArray={null}
         >
-          <DocumentAddIcon className="h-10" />
+          <DocumentAddIcon className="h-10 relative" />
+          
         </NavItem> 
 
         <NavItem
