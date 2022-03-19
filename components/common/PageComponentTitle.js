@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import ProductInputModal from '../product/ProductInputModal';
 import InputModal from './InputModal';
+import RolePermissionInputModal from './RolePermissionInputModal';
 
 const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, modalInputStatus}) => {
+
     const [modal, setModal] = useState(false);
       
-       
+    
     return (
         <>
        
@@ -35,7 +37,8 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
             </svg>
             {buttonTitle}
           </button>
-          {modalInputStatus === 'productAdd' ? 
+
+          {/* {modalInputStatus === 'productAdd' ? 
               //Product input Modal
               <ProductInputModal 
                 modal={modal} 
@@ -51,7 +54,36 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
                 inputStatus={modalInputStatus}
                 pageNumber={pageNumber}
               />
+        } */}
+
+        { modalInputStatus === 'category' || modalInputStatus === 'subCategory' || modalInputStatus === 'brand' || modalInputStatus === 'banner' ?
+          <InputModal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalInputStatus}
+          pageNumber={pageNumber}
+        /> : ''
         }
+
+        {modalInputStatus === 'productAdd' && 
+          <ProductInputModal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalInputStatus}
+          pageNumber={pageNumber}
+        />
+        }
+        
+        {/* {modalInputStatus === 'permissionAdd' && 
+          <RolePermissionInputModal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalInputStatus}
+          pageNumber={pageNumber}
+        />
+        } */}
+
+        
           
         </div>
       </>

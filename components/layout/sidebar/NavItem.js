@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 const NavItem = ({sidebarStatus, menuTitle, subMenu, subMenuArray, hrefLink, children}) => {
     const [subMenuToggleStatus, setSubMenuToggleStatus] = useState(false);
+    //console.log(subMenuArray)
     const subMenuToggle = ()=>{
         setSubMenuToggleStatus(!subMenuToggleStatus)
       }
@@ -29,7 +30,12 @@ const NavItem = ({sidebarStatus, menuTitle, subMenu, subMenuArray, hrefLink, chi
             {/* submenu */}
             {subMenu && (
                 <ul className={`${subMenuToggleStatus ? '' : 'hidden'} text-white space-y-2 ml-7`}>
-                    {subMenuArray.map((subMenu, index)=> <li className='cursor-pointer active:text-orange-400 hover:text-purple-500' key={index}>{subMenu}</li>)}
+                    {subMenuArray.map((subMenu, index)=> (
+                        <Link href={subMenu.linkHref}>
+                        <li className='cursor-pointer active:text-orange-400 hover:text-purple-500' key={index}>{subMenu.subMenuTitle}</li>
+                        </Link>
+                        ))
+                    }
                 </ul>      
             )}
           

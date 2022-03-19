@@ -1,5 +1,5 @@
 import {
-  ArrowNarrowLeftIcon,
+  AdjustmentsIcon, ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
   CollectionIcon, DocumentAddIcon, DotsCircleHorizontalIcon, DuplicateIcon, PuzzleIcon
 } from "@heroicons/react/solid";
@@ -22,7 +22,17 @@ const Nav = ({ sidebarOutsideClick }) => {
     setSubMenuToggleStatus(!subMenuToggleStatus);
   };
 
-  const SubCategorySubMenuArray = ["Sub-Category All", "Sub-Category Edit"];
+  //System Accesss Menu's SubMenu
+  const systemAccessSubMenu = [
+    {
+      subMenuTitle: "Permission",
+      linkHref: "/permission"
+    },
+    {
+      subMenuTitle: "Role",
+      linkHref: "/role"
+    }
+  ];
 
   useEffect(() => {
     if (sidebarOutsideClick) {
@@ -96,6 +106,16 @@ const Nav = ({ sidebarOutsideClick }) => {
           subMenuArray={null}
         >
           <PuzzleIcon className="h-10" />
+        </NavItem> 
+        
+        <NavItem
+          hrefLink=''
+          sidebarStatus={sidebarStatus}
+          menuTitle="System Access"
+          subMenu={true}
+          subMenuArray={systemAccessSubMenu}
+        >
+          <AdjustmentsIcon className="h-10" />
         </NavItem> 
        
       </nav>

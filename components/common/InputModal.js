@@ -19,7 +19,7 @@ const InputModal = ({modal, setModal, inputStatus,pageNumber}) => {
     const serverError = useSelector((state)=>state?.store?.subcategory?.item?.errors);
     //watch function show react-from-hook onChange function
     const watchAllFields = watch();
-    //console.log("inputModal a", selectedImage)
+    console.log("inputModal a", inputStatus)
    
     const fromHandleSubmit = (data, e)=>{
       //Category form dispatch
