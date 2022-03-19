@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import Table from 'rc-table';
@@ -14,7 +15,7 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
     const [tableSingleColumnData, setTableSingleColumnData] = useState('');
     const [modalMode, setModalMode] = useState('');
 
-    console.log("table modal modalMode", tableMode)
+    //console.log("table modal modalMode", tableData)
    
     // Table View Click Function
     const viewInfoHandler = (data)=>{
@@ -24,6 +25,8 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
       //set modal status
       if(tableMode === 'permission'){
         setModalMode('permissionView')
+      }else if(tableMode === 'role'){
+        setModalMode('roleView')
       }
     }
 
@@ -35,6 +38,8 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
       //set modal status
       if(tableMode === 'permission'){
         setModalMode('permissionEdit')
+      }else if(tableMode === 'role'){
+        setModalMode('roleEdit')
       }
     }
 
@@ -46,9 +51,14 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
         //set modal status
         if(tableMode === 'permission'){
         setModalMode('permissionDelete')
+        }else if(tableMode === 'role'){
+          setModalMode('roleDelete')
         }
     }
 
+    const prissionData = (data)=>{
+      console.log(data)
+    } 
   
    
    
@@ -67,14 +77,26 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
           dataIndex: 'group_name',
           key: 'group_name',
           width: 400,
-          className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`
+          className:`${tableMode === 'role' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`
+        },
+        {
+          title: 'Permissions',
+          dataIndex: 'permissions',
+          key: 'permissions',
+          width: 400,
+          className:`${tableMode === 'permission' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`,
+          render: (data) =>{
+            return (
+              <span className='flex flex-col'>
+               {data?.map(book => (<span className='bg-purple-600 px-1  mr-2 mb-2 rounded-md'>{book.name} </span>))}
+              </span>)
+                  }
         },
         {
           title: 'Operations',
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
-          width: 500,
           render: (data) => <>
                           <a href="#" onClick={()=>viewInfoHandler(data)}>View</a> | 
                           <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> | 

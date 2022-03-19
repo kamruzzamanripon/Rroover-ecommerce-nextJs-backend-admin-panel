@@ -8,7 +8,7 @@ import usePrivateRoute from '../utils/usePrivateRoute';
 const  rolePage = ()=> {
   
   return (
-    <Layout title='role'>
+    <Layout title='Role'>
         <Role />
     </Layout>
   )

@@ -8,7 +8,7 @@ import usePrivateRoute from '../utils/usePrivateRoute';
 const  productPage = ()=> {
   
   return (
-    <Layout title='brand'>
+    <Layout title='Product'>
         <Product />
     </Layout>
   )

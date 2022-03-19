@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { permissionAllWithPagination, permissionDataAdd, permissionDataDelete, permissionDataEdit } from "../data_fetch/permissionDataFetch";
+import { permissionAllWithOutPagination, permissionAllWithPagination, permissionDataAdd, permissionDataDelete, permissionDataEdit } from "../data_fetch/permissionDataFetch";
 
 
 
@@ -28,6 +28,18 @@ const permissionSlice = createSlice({
           state.items = payload
       },
       [permissionAllWithPagination.rejected]: (state) => {
+          state.loading = false
+      },  
+      
+      // Permission All withOut Pagination
+      [permissionAllWithOutPagination.pending]: (state) => {
+        state.loading = true
+      },
+      [permissionAllWithOutPagination.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [permissionAllWithOutPagination.rejected]: (state) => {
           state.loading = false
       },  
       

@@ -5,6 +5,7 @@ import brandReducer from './brandSlice';
 import categoryReducer from './categorySlice';
 import permissionReducer from './permissionSlice';
 import productReducer from './productSlice';
+import roleReducer from './roleSlice';
 import subcategoryReducer from './subCategorySlice';
 
 
@@ -15,6 +16,7 @@ const reducers = combineReducers({
     banner:bannerReducer,
     product:productReducer,
     permission:permissionReducer,
+    role:roleReducer,
     userinfo
   })
 

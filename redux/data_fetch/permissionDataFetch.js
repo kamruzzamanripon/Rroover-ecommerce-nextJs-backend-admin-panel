@@ -18,6 +18,23 @@ export const permissionAllWithPagination =  createAsyncThunk(
 )
 
 
+//Permission All withOut pagination
+export const permissionAllWithOutPagination =  createAsyncThunk(
+    'permission/permissionAllWithOutPagination',
+      async (pageNumber)=>{
+        
+            try{
+                const res = await axiosInstance().get(`${process.env.baseUrl}/permission/all`);
+                //console.log("Hello")
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.Permission_info
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+
 //Permission Add/store
 export const permissionDataAdd =  createAsyncThunk(
     'permission/permissionDataAdd',

@@ -6,9 +6,11 @@ import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch } from "react-redux";
 import { permissionAllWithPagination, permissionDataAdd, permissionDataDelete, permissionDataEdit } from "../../redux/data_fetch/permissionDataFetch";
+import PermissionList from "./sort/PermissionList";
 
 const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, dataInfo }) => {
-  
+ 
+
   //React Hook Form
   const {
     register,
@@ -23,7 +25,7 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
   //watch function show react-from-hook onChange function
   const watchAllFields = watch();
 
-  console.log("inputModal a", inputStatus)
+  //console.log("inputModal a", dataInfo)
   //console.log("inputModal a", dataInfo)
 
   //From Handling for Product data Add/store
@@ -65,6 +67,8 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
 },[modal])
   
 
+
+
  
   return (
     <>
@@ -82,11 +86,12 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
 
           <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                 {inputStatus === 'permissionView' || inputStatus === 'permissionEdit' || inputStatus === 'permissionDelete' ? <p>Permission Information</p> : ''}
+                {inputStatus === 'roleView' || inputStatus === 'roleEdit' || inputStatus === 'roleDelete' ? <p>Role Information</p> : ''}
                 {inputStatus === 'permissionAdd' && <p>New Permission Add</p>}
                
           </div>
 
-          {/* Product Id insert for Edit and Delete */}
+          {/* Item Id insert for Edit and Delete */}
           {inputStatus === 'permissionEdit' || inputStatus === 'permissionDelete'  ?
                     (<input 
                     className="border-2 border-purple-600/50 w-[75%] "
@@ -98,7 +103,7 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
          
           <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
-                {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' ? 
+                {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' || inputStatus === 'roleView' || inputStatus === 'roleDelete' ? 
                         <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.name}</label> :
 
                         <input 
@@ -112,22 +117,32 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
                     }   
           </div> 
 
+           {/* Only Permission page See this input */}
+           {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' || inputStatus === 'permissionEdit' ? (
+             <div className="flex justify-between">
+             <label className="font-semibold pr-2">Group Name</label>
+             {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' ? 
+                     <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.group_name}</label> :
 
-           <div className="flex justify-between">
-                <label className="font-semibold pr-2">Group Name</label>
-                {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' ? 
-                        <label className="border-b-2 border-purple-600/50 w-[75%] text-right">{dataInfo.group_name}</label> :
+                     <input 
+                     className="border-2 border-purple-600/50 w-[75%] "
+                     defaultValue={dataInfo?.group_name}
+                     type="text" 
+                     {...register("group_name", {
+                         required: "required",
+                     })}
+                     />
+                 }   
+              </div> 
+            ) : ''
+           }       
 
-                        <input 
-                        className="border-2 border-purple-600/50 w-[75%] "
-                        defaultValue={dataInfo?.group_name}
-                        type="text" 
-                        {...register("group_name", {
-                            required: "required",
-                        })}
-                        />
-                    }   
-          </div>   
+
+           {/* Only Permission page See this input */}    
+           {inputStatus === 'roleView' || inputStatus === 'roleDelete' || inputStatus === 'roleEdit' ?
+              <PermissionList register={register} errors={errors} watchAllFields={watchAllFields} inputStatus={inputStatus} dataInfo={dataInfo}/>
+            : ''
+           }
 
             <div className="flex justify-between">
            
@@ -135,6 +150,11 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
               {inputStatus === 'permissionView' && <button className="bg-green-700 text-white p-3 w-full mt-5 text-lg"> Ok</button> }
               {inputStatus === 'permissionEdit' && <button className="bg-yellow-500 text-white p-3 w-full mt-5 text-lg"> Update</button>}
               {inputStatus === 'permissionDelete' && <button className="bg-red-500 text-white p-3 w-full mt-5 text-lg"> Delete</button>}
+              
+              {inputStatus === 'roleAdd' && <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg"> Submit</button> }
+              {inputStatus === 'roleView' && <button className="bg-green-700 text-white p-3 w-full mt-5 text-lg"> Ok</button> }
+              {inputStatus === 'roleEdit' && <button className="bg-yellow-500 text-white p-3 w-full mt-5 text-lg"> Update</button>}
+              {inputStatus === 'roleDelete' && <button className="bg-red-500 text-white p-3 w-full mt-5 text-lg"> Delete</button>}
              
              
             </div>

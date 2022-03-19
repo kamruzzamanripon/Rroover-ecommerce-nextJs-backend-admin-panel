@@ -10,7 +10,7 @@ export const roleAllWithPagination =  createAsyncThunk(
                 const res = await axiosInstance().get(`${process.env.baseUrl}/role/all/pagination?page=${pageNumber}`);
                 //console.log("Hello")
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
-                return res.data.Permission_info
+                return res.data.roles
             }catch(e){
                 console.log("server Error", e)
             }

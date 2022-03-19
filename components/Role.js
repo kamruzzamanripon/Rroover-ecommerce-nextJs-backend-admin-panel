@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { permissionAllWithPagination } from '../redux/data_fetch/permissionDataFetch';
+import { roleAllWithPagination } from '../redux/data_fetch/roleDataFetch';
 import { resetPermissionItem } from '../redux/store_slices/permissionSlice';
 import LoadingStatusBar from './common/LoadingStatusBar';
 import RolePermissionComponentTitle from './common/RolePermissionComponentTitle';
 import RolePermissionTableView from './common/RolePermissionTableView';
 
-
 const Role = () => {
   const [pageNumber, setPageNumber] = useState(1);
     const dispatch = useDispatch();
-    const roleData = useSelector((state)=>state.store.permission.items);
-    const confirmationMessage = useSelector((state)=>state.store.permission.item.message);
-    const serverError = useSelector((state)=>state?.store?.permission?.item?.errors);
-    const LoadingStatus = useSelector((state)=>state?.store?.permission?.loading);
+    const roleData = useSelector((state)=>state.store.role.items);
+    const confirmationMessage = useSelector((state)=>state.store.role.item.message);
+    const serverError = useSelector((state)=>state?.store?.role?.item?.errors);
+    const LoadingStatus = useSelector((state)=>state?.store?.role?.loading);
 
+    //console.log("role data", roleData)
     
    //Default Dispatch PermissionAll
   useEffect(()=>{
-    dispatch(permissionAllWithPagination(pageNumber))
+    dispatch(roleAllWithPagination(pageNumber))
   },[pageNumber])
 
 
