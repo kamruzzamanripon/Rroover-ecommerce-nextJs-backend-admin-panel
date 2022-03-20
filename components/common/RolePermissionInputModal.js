@@ -6,6 +6,7 @@ import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch } from "react-redux";
 import { permissionAllWithPagination, permissionDataAdd, permissionDataDelete, permissionDataEdit } from "../../redux/data_fetch/permissionDataFetch";
+import { roleAllWithPagination, roleChangeWithPermissionAssign, roleCreateWithPermissionAssign, roleDelete } from "../../redux/data_fetch/roleDataFetch";
 import PermissionList from "./sort/PermissionList";
 
 const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, dataInfo }) => {
@@ -55,8 +56,34 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
       reset()
       //console.log(data)
      }
+
+
+     //Role Add, Edit, Delete and View form handle
+    if(inputStatus === 'roleAdd'){
+       dispatch(roleCreateWithPermissionAssign(data))
+      dispatch(roleAllWithPagination(pageNumber))
+      setModal(false)
+      reset()
+      //console.log(data)
+      //console.log(inputStatus)
+     }else if(inputStatus === 'roleView'){
+      setModal(false)
+      reset()
+     }else if(inputStatus === 'roleEdit'){
+      dispatch(roleChangeWithPermissionAssign(data))
+      dispatch(roleAllWithPagination(pageNumber))
+      setModal(false)
+      reset() 
+      //console.log(data)
+     }else if(inputStatus === 'roleDelete'){
+      dispatch(roleDelete(data))
+      dispatch(roleAllWithPagination(pageNumber))
+      setModal(false)
+      reset() 
+      //console.log(data)
+     }
     
-    //console.log("product form", data);
+    //console.log("product form", data); roleChangeWithPermissionAssign
   };
 
 
@@ -84,15 +111,17 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
         <form action="#" onSubmit={handleSubmit(fromHandleSubmit)}>
           <div className="flex-row space-y-3 relative">
 
+          {/* Form Title */}
           <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                 {inputStatus === 'permissionView' || inputStatus === 'permissionEdit' || inputStatus === 'permissionDelete' ? <p>Permission Information</p> : ''}
                 {inputStatus === 'roleView' || inputStatus === 'roleEdit' || inputStatus === 'roleDelete' ? <p>Role Information</p> : ''}
                 {inputStatus === 'permissionAdd' && <p>New Permission Add</p>}
+                {inputStatus === 'roleAdd' && <p>New Role Add</p>}
                
           </div>
 
           {/* Item Id insert for Edit and Delete */}
-          {inputStatus === 'permissionEdit' || inputStatus === 'permissionDelete'  ?
+          {inputStatus === 'permissionEdit' || inputStatus === 'permissionDelete' || inputStatus === 'roleDelete' || inputStatus === 'roleEdit'  ?
                     (<input 
                     className="border-2 border-purple-600/50 w-[75%] "
                     defaultValue={dataInfo?.id}
@@ -101,6 +130,7 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
                   />) : ''
           }
          
+          {/* common name input Field */}
           <div className="flex justify-between">
                 <label className="font-semibold pr-2">Name</label>
                 {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' || inputStatus === 'roleView' || inputStatus === 'roleDelete' ? 
@@ -118,7 +148,7 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
           </div> 
 
            {/* Only Permission page See this input */}
-           {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' || inputStatus === 'permissionEdit' ? (
+           {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' || inputStatus === 'permissionEdit' || inputStatus === 'permissionAdd' ? (
              <div className="flex justify-between">
              <label className="font-semibold pr-2">Group Name</label>
              {inputStatus === 'permissionView' || inputStatus === 'permissionDelete' ? 
@@ -138,12 +168,13 @@ const RolePermissionInputModal = ({ modal, setModal, inputStatus, pageNumber, da
            }       
 
 
-           {/* Only Permission page See this input */}    
-           {inputStatus === 'roleView' || inputStatus === 'roleDelete' || inputStatus === 'roleEdit' ?
+           {/* All Permission List Show on CheckBox */}    
+           {inputStatus === 'roleView' || inputStatus === 'roleDelete' || inputStatus === 'roleEdit' || inputStatus === 'roleAdd' ?
               <PermissionList register={register} errors={errors} watchAllFields={watchAllFields} inputStatus={inputStatus} dataInfo={dataInfo}/>
             : ''
            }
 
+            {/* Submit/Update/Delete Button */}
             <div className="flex justify-between">
            
               {inputStatus === 'permissionAdd' && <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg"> Submit</button> }

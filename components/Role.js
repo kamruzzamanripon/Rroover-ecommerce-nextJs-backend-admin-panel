@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { roleAllWithPagination } from '../redux/data_fetch/roleDataFetch';
-import { resetPermissionItem } from '../redux/store_slices/permissionSlice';
+import { resetRoleSliceItem } from '../redux/store_slices/roleSlice';
 import LoadingStatusBar from './common/LoadingStatusBar';
 import RolePermissionComponentTitle from './common/RolePermissionComponentTitle';
 import RolePermissionTableView from './common/RolePermissionTableView';
@@ -11,7 +11,7 @@ const Role = () => {
   const [pageNumber, setPageNumber] = useState(1);
     const dispatch = useDispatch();
     const roleData = useSelector((state)=>state.store.role.items);
-    const confirmationMessage = useSelector((state)=>state.store.role.item.message);
+    const confirmationMessage = useSelector((state)=>state?.store?.role?.item?.message);
     const serverError = useSelector((state)=>state?.store?.role?.item?.errors);
     const LoadingStatus = useSelector((state)=>state?.store?.role?.loading);
 
@@ -25,21 +25,21 @@ const Role = () => {
 
   //Confirmation toaster message
   useEffect(()=>{
-    if(confirmationMessage === 'Permission Data Add'){
-      toast("Permission Data Add")
-      dispatch(resetPermissionItem())
+    if(confirmationMessage === 'Role succesfully Create'){
+      toast("Role succesfully Create")
+      dispatch(resetRoleSliceItem())
     }
-    if(confirmationMessage === 'Permission Data Update'){
-      toast("Permission Data Update")
-      dispatch(resetPermissionItem())
+    if(confirmationMessage === 'Role succesfully Update'){
+      toast("Role succesfully Update")
+      dispatch(resetRoleSliceItem())
     }
-    if(confirmationMessage === 'Permission Data Delete'){
-      toast("Permission Data Delete Successfully")
-      dispatch(resetPermissionItem())
+    if(confirmationMessage === 'Role succesfully Delete'){
+      toast("Role succesfully Delete")
+      dispatch(resetRoleSliceItem())
     }
     if(serverError){
       toast.error(serverError.name[0])
-      dispatch(resetPermissionItem())
+      dispatch(resetRoleSliceItem())
     }
   },[confirmationMessage,serverError])
 
@@ -55,6 +55,7 @@ const Role = () => {
             title='Role'
             titleDescription='List, view and edit'
             buttonTitle='Create new Role'
+            buttonTwoTitle='Role Assign'
             pageNumber={pageNumber}
             modalInputStatus='roleAdd'
         />

@@ -27,13 +27,13 @@ const RolePermissionCreateButton = ({buttonTitle, pageNumber, modalInputStatus})
           </button>
 
           { 
-            modalInputStatus === 'permissionAdd' && 
+            modalInputStatus === 'permissionAdd' || modalInputStatus === 'roleAdd' ? 
             <RolePermissionInputModal 
             modal={modal} 
             setModal={setModal} 
             inputStatus={modalInputStatus}
             pageNumber={pageNumber}
-            />
+            /> : ''
         }
         </>
     );

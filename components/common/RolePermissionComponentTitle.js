@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RolePermissionCreateButton from './sort/RolePermissionCreateButton';
 
-const RolePermissionComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, modalInputStatus}) => {
+const RolePermissionComponentTitle = ({title, titleDescription, buttonTitle, buttonTwoTitle, pageNumber, modalInputStatus}) => {
 
     const [modal, setModal] = useState(false);
       
@@ -16,7 +16,7 @@ const RolePermissionComponentTitle = ({title, titleDescription, buttonTitle, pag
   
         <div className="flex flex-wrap items-start justify-end -mb-3">
          
-            <RolePermissionCreateButton buttonTitle="Role assign" pageNumber={pageNumber} modalInputStatus={modalInputStatus} />
+            <RolePermissionCreateButton buttonTitle={buttonTwoTitle} pageNumber={pageNumber} modalInputStatus={modalInputStatus} />
             <RolePermissionCreateButton buttonTitle={buttonTitle} pageNumber={pageNumber} modalInputStatus={modalInputStatus} />
              
 
