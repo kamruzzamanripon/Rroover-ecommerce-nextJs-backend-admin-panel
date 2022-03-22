@@ -17,6 +17,22 @@ export const roleAllWithPagination =  createAsyncThunk(
         }
 )
 
+//Role All withOut pagination
+export const roleAllWithOutPagination =  createAsyncThunk(
+    'role/roleAllWithOutPagination',
+      async ()=>{
+        
+            try{
+                const res = await axiosInstance().get(`${process.env.baseUrl}/role/all`);
+                //console.log("Hello")
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.roles
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
 
 //Role Create with permission Assign
 export const roleCreateWithPermissionAssign =  createAsyncThunk(
@@ -36,7 +52,7 @@ export const roleCreateWithPermissionAssign =  createAsyncThunk(
 )
 
 
-//Role Create with permission Assign
+//Role Change with permission Assign
 export const roleChangeWithPermissionAssign =  createAsyncThunk(
     'role/roleChangeWithPermissionAssign',
       async (data)=>{
@@ -63,6 +79,44 @@ export const roleDelete =  createAsyncThunk(
                               
                 const res = await axiosInstance().delete(`${process.env.baseUrl}/role/delete/${data.Id}`);
                 //console.log("Hello")
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+
+//Role Assign by User Id
+export const roleAssignByUserId =  createAsyncThunk(
+    'role/roleAssignByUserId',
+      async (data)=>{
+        
+            try{
+                              
+                const res = await axiosInstance().post(`${process.env.baseUrl}/role/role-assign`, data);
+                //console.log("Hello")
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+//Role Assign Change by User Id
+export const roleAssignChangeByUserId =  createAsyncThunk(
+    'role/roleAssignChangeByUserId',
+      async (data)=>{
+        
+            try{
+                  //console.log(data)  
+                const formData = new FormData();
+                formData.append('roleName', data.roleName)          
+                
+                const res = await axiosInstance().post(`${process.env.baseUrl}/role/role-assign-change/${data.Id}`, formData);
+               // console.log("res", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data
             }catch(e){

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import RoleAssignInputModal from '../../roleAssign/RoleAssignInputModal';
 import RolePermissionInputModal from '../RolePermissionInputModal';
 
 const RolePermissionCreateButton = ({buttonTitle, pageNumber, modalInputStatus}) => {
@@ -34,6 +35,16 @@ const RolePermissionCreateButton = ({buttonTitle, pageNumber, modalInputStatus})
             inputStatus={modalInputStatus}
             pageNumber={pageNumber}
             /> : ''
+        }
+
+        { 
+          modalInputStatus === 'roleAssign'  ? 
+          <RoleAssignInputModal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalInputStatus}
+          pageNumber={pageNumber}
+          /> : ''
         }
         </>
     );

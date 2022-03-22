@@ -4,7 +4,7 @@
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
-import RolePermissionInputModal from '../common/RolePermissionInputModal';
+import RoleAssignInputModal from './RoleAssignInputModal';
 
 
 
@@ -24,7 +24,7 @@ const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMod
       setTableSingleColumnData(data)
 
       //set modal status
-      setModalMode('roleView')
+      setModalMode('roleAssignView')
     }
 
     // Table Edit Click Function
@@ -33,24 +33,10 @@ const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMod
       setTableSingleColumnData(data)
 
       //set modal status
-      setModalMode('roleEdit')
+      setModalMode('roleAssignEdit')
     }
 
-    //Table Delete Click Function
-    const viewInfoDeleteHandler = (data)=>{
-      setModal(true)
-      setTableSingleColumnData(data)
-
-        //set modal status
-        setModalMode('roleDelete')
-    }
-
-    const prissionData = (data)=>{
-      console.log(data)
-    } 
-  
-   
-   
+      
     //Table Columns Data Show
     const columns = [
         {
@@ -68,7 +54,7 @@ const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMod
           width: 400,
           className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`,
           render : (data)=>{
-               return <span onClick={()=>prissionData(data)}>{data[0]?.name}</span>
+               return <span>{data[0]?.name}</span>
             }
         },
         {
@@ -91,9 +77,8 @@ const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMod
           className:"text-white bg-gray-600 p-2 border-b-2",
           render: (data) => <>
                           <a href="#" onClick={()=>viewInfoHandler(data)}>View</a> | 
-                          <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> | 
-                          <a href="#" onClick={()=>viewInfoDeleteHandler(data)}>Delete</a>
-                        </>,
+                          <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> 
+                         </>,
           
         },
       ];
@@ -115,7 +100,7 @@ const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMod
         <Table columns={columns} data={tableData} rowKey='id'  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
         
         {/* product view, edit and Delect Modal */}
-        <RolePermissionInputModal 
+        <RoleAssignInputModal 
           modal={modal} 
           setModal={setModal} 
           inputStatus={modalMode}

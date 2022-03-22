@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminUserListData } from '../redux/data_fetch/authenticationDataFetch';
+import LoadingStatusBar from './common/LoadingStatusBar';
 import RolePermissionComponentTitle from './common/RolePermissionComponentTitle';
 import RoleAssignTableView from './roleAssign/RoleAssignTableView';
 
@@ -20,18 +22,15 @@ const RoleAssign = () => {
 
   //Confirmation toaster message
   useEffect(()=>{
-    if(confirmationMessage === 'Role succesfully Create'){
-      toast("Role succesfully Create")
+    if(confirmationMessage === 'Role succesfully Assign'){
+      toast("Role succesfully Assign")
       dispatch(resetRoleSliceItem())
     }
     if(confirmationMessage === 'Role succesfully Update'){
       toast("Role succesfully Update")
       dispatch(resetRoleSliceItem())
     }
-    if(confirmationMessage === 'Role succesfully Delete'){
-      toast("Role succesfully Delete")
-      dispatch(resetRoleSliceItem())
-    }
+    
     if(serverError){
       toast.error(serverError.name[0])
       dispatch(resetRoleSliceItem())
@@ -39,18 +38,18 @@ const RoleAssign = () => {
   },[confirmationMessage,serverError])
     return (
         <main className="p-6 sm:p-10 space-y-6">
-        {/* {serverError && <h2 className='text-red-600 text-2xl'>{serverError.name[0]}</h2>}
+        {serverError && <h2 className='text-red-600 text-2xl'>{serverError.name[0]}</h2>}
        <Toaster />
        {LoadingStatus && 
           <LoadingStatusBar />
-        } */}
+        }
       <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
           <RolePermissionComponentTitle 
               title='User List and Role Assign'
               titleDescription='List, view and edit'
               buttonTitle='Create new Role'
               pageNumber={pageNumber}
-              modalInputStatus='roleAdd'
+              modalInputStatus='roleAssign'
           />
       </div>
   

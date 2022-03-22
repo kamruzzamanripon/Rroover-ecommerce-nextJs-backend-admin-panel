@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
     }
 )
 
-
+//Admin User List with Pagination and related role and permission
 export const AdminUserListData = createAsyncThunk(
     'authenticationSlice/AdminUserListData',
     async(pageNumber)=>{
@@ -38,6 +38,25 @@ export const AdminUserListData = createAsyncThunk(
             //console.log(res)
                 //console.log("mainslider server", res)
                 return res.data.adminUserList
+
+        }catch(e){
+
+            //console.log("login usere ERror",e.response)
+            return e.response;
+        }
+    }
+)
+
+//Admin User List with out Pagination 
+export const AdminUserListWithOutPagination = createAsyncThunk(
+    'authenticationSlice/AdminUserListWithOutPagination',
+    async(pageNumber)=>{
+        try{
+            
+            const res = await axiosInstance().get(`${process.env.baseUrl}/user-list-all`);
+            //console.log(res)
+            //console.log("mainslider server", res)
+            return res.data.adminUserList
 
         }catch(e){
 

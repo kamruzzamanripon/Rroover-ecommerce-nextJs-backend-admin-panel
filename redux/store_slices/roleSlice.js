@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { roleAllWithPagination, roleChangeWithPermissionAssign, roleCreateWithPermissionAssign, roleDelete } from "../data_fetch/roleDataFetch";
+import { roleAllWithOutPagination, roleAllWithPagination, roleAssignByUserId, roleAssignChangeByUserId, roleChangeWithPermissionAssign, roleCreateWithPermissionAssign, roleDelete } from "../data_fetch/roleDataFetch";
 
 
 
@@ -28,6 +28,18 @@ const roleSlice = createSlice({
           state.items = payload
       },
       [roleAllWithPagination.rejected]: (state) => {
+          state.loading = false
+      },   
+      
+      // Role All withOut Pagination
+      [roleAllWithOutPagination.pending]: (state) => {
+        state.loading = true
+      },
+      [roleAllWithOutPagination.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [roleAllWithOutPagination.rejected]: (state) => {
           state.loading = false
       },   
       
@@ -66,6 +78,32 @@ const roleSlice = createSlice({
           state.item = payload
       },
       [roleDelete.rejected]: (state) => {
+          state.loading = false
+      },  
+      
+
+      //Role Assign by User Id
+      [roleAssignByUserId.pending]: (state) => {
+        state.loading = true
+      },
+      [roleAssignByUserId.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.item = payload
+      },
+      [roleAssignByUserId.rejected]: (state) => {
+          state.loading = false
+      },  
+      
+      
+      //Role Assign Change by User Id
+      [roleAssignChangeByUserId.pending]: (state) => {
+        state.loading = true
+      },
+      [roleAssignChangeByUserId.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.item = payload
+      },
+      [roleAssignChangeByUserId.rejected]: (state) => {
           state.loading = false
       },  
       

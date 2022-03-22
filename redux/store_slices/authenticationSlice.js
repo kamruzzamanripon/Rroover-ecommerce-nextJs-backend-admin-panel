@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AdminUserListData, login } from '../data_fetch/authenticationDataFetch';
+import { AdminUserListData, AdminUserListWithOutPagination, login } from '../data_fetch/authenticationDataFetch';
 
 const initialState = {
     authLoading: false,
@@ -26,7 +26,7 @@ const authenticationSlice = createSlice({
         state.authLoading = false
     },
     
-    // Login Reducer
+    //Admin User List with Pagination and related role and permission
     [AdminUserListData.pending]: (state) => {
         state.authLoading = true
         },
@@ -35,6 +35,18 @@ const authenticationSlice = createSlice({
         state.userList = payload
     },
     [AdminUserListData.rejected]: (state) => {
+        state.authLoading = false
+    },
+    
+    //Admin User List with out Pagination 
+    [AdminUserListWithOutPagination.pending]: (state) => {
+        state.authLoading = true
+        },
+    [AdminUserListWithOutPagination.fulfilled]: (state, { payload }) => {
+        state.authLoading = false
+        state.userList = payload
+    },
+    [AdminUserListWithOutPagination.rejected]: (state) => {
         state.authLoading = false
     },
 
