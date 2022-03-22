@@ -8,7 +8,7 @@ import RolePermissionComponentTitle from './common/RolePermissionComponentTitle'
 import RolePermissionTableView from './common/RolePermissionTableView';
 
 const Role = () => {
-  const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
     const dispatch = useDispatch();
     const roleData = useSelector((state)=>state.store.role.items);
     const confirmationMessage = useSelector((state)=>state?.store?.role?.item?.message);
@@ -55,7 +55,6 @@ const Role = () => {
             title='Role'
             titleDescription='List, view and edit'
             buttonTitle='Create new Role'
-            buttonTwoTitle='Role Assign'
             pageNumber={pageNumber}
             modalInputStatus='roleAdd'
         />

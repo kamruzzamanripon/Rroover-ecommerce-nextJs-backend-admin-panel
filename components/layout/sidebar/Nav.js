@@ -31,6 +31,10 @@ const Nav = ({ sidebarOutsideClick }) => {
     {
       subMenuTitle: "Role",
       linkHref: "/role"
+    },
+    {
+      subMenuTitle: "Role Assign",
+      linkHref: "/role-assign"
     }
   ];
 

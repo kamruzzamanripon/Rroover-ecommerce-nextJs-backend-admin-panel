@@ -4,10 +4,11 @@
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
-import RolePermissionInputModal from './RolePermissionInputModal';
+import RolePermissionInputModal from '../common/RolePermissionInputModal';
 
 
-const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
+
+const RoleAssignTableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
     const [paginationInfo, setPaginationInfo] = useState();
     const [tableImagePreview, setTableImagePreview] = useState();
     const [tableData, setTableData] = useState();
@@ -23,11 +24,7 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
       setTableSingleColumnData(data)
 
       //set modal status
-      if(tableMode === 'permission'){
-        setModalMode('permissionView')
-      }else if(tableMode === 'role'){
-        setModalMode('roleView')
-      }
+      setModalMode('roleView')
     }
 
     // Table Edit Click Function
@@ -36,11 +33,7 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
       setTableSingleColumnData(data)
 
       //set modal status
-      if(tableMode === 'permission'){
-        setModalMode('permissionEdit')
-      }else if(tableMode === 'role'){
-        setModalMode('roleEdit')
-      }
+      setModalMode('roleEdit')
     }
 
     //Table Delete Click Function
@@ -49,11 +42,7 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
       setTableSingleColumnData(data)
 
         //set modal status
-        if(tableMode === 'permission'){
-        setModalMode('permissionDelete')
-        }else if(tableMode === 'role'){
-          setModalMode('roleDelete')
-        }
+        setModalMode('roleDelete')
     }
 
     const prissionData = (data)=>{
@@ -73,23 +62,26 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
           rowClassName:"bg-black-ripon"
         },
         {
-          title: 'Group Name',
-          dataIndex: 'group_name',
-          key: 'group_name',
+          title: 'Role Name',
+          dataIndex: 'roles',
+          key: 'roles',
           width: 400,
-          className:`${tableMode === 'role' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`
+          className:`text-white bg-gray-600 p-2 border-r-2 border-b-2`,
+          render : (data)=>{
+               return <span onClick={()=>prissionData(data)}>{data[0]?.name}</span>
+            }
         },
         {
           title: 'Permissions',
-          dataIndex: 'permissions',
-          key: 'permissions',
+          dataIndex: 'roles',
+          key: 'roles',
           width: 400,
           className:`${tableMode === 'permission' ? 'hidden' : ''} text-white bg-gray-600 p-2 border-r-2 border-b-2`,
           render: (data) =>{
             return (
-              <span className='flex flex-col'>
-               {data?.map(permission => (<span className='bg-purple-600 px-1  mr-2 mb-2 rounded-md'>{permission.name} </span>))}
-              </span>)
+                <span className='flex flex-col'>
+                 {data[0]?.permissions?.map(permission => (<span className='bg-purple-600 px-1  mr-2 mb-2 rounded-md'>{permission.name} </span>))}
+                </span>)
                   }
         },
         {
@@ -150,4 +142,4 @@ const RolePermissionTableView = ({tableDataInfo, setPageNumber, pageNumber, tabl
     );
 };
 
-export default RolePermissionTableView;
+export default RoleAssignTableView;

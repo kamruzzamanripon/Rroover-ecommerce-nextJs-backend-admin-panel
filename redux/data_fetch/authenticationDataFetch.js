@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { axiosInstance } from '../../utils/useAxios_auth_header';
 
 export const login = createAsyncThunk(
     'authenticationSlice/login',
@@ -18,6 +19,25 @@ export const login = createAsyncThunk(
             }
             //console.log("token", res)
             return res.data;
+
+        }catch(e){
+
+            //console.log("login usere ERror",e.response)
+            return e.response;
+        }
+    }
+)
+
+
+export const AdminUserListData = createAsyncThunk(
+    'authenticationSlice/AdminUserListData',
+    async(pageNumber)=>{
+        try{
+            
+            const res = await axiosInstance().get(`${process.env.baseUrl}/user-list?page=${pageNumber}`);
+            //console.log(res)
+                //console.log("mainslider server", res)
+                return res.data.adminUserList
 
         }catch(e){
 

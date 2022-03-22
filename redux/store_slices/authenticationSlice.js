@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login } from '../data_fetch/authenticationDataFetch';
+import { AdminUserListData, login } from '../data_fetch/authenticationDataFetch';
 
 const initialState = {
     authLoading: false,
-    userInfo:{}
+    userInfo:{},
+    userList:[]
 }
 
 
@@ -22,6 +23,18 @@ const authenticationSlice = createSlice({
         state.userInfo = payload
     },
     [login.rejected]: (state) => {
+        state.authLoading = false
+    },
+    
+    // Login Reducer
+    [AdminUserListData.pending]: (state) => {
+        state.authLoading = true
+        },
+    [AdminUserListData.fulfilled]: (state, { payload }) => {
+        state.authLoading = false
+        state.userList = payload
+    },
+    [AdminUserListData.rejected]: (state) => {
         state.authLoading = false
     },
 

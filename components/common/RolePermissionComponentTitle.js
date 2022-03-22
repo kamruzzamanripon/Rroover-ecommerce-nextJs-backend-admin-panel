@@ -15,12 +15,9 @@ const RolePermissionComponentTitle = ({title, titleDescription, buttonTitle, but
         </div>
   
         <div className="flex flex-wrap items-start justify-end -mb-3">
-         
-            <RolePermissionCreateButton buttonTitle={buttonTwoTitle} pageNumber={pageNumber} modalInputStatus={modalInputStatus} />
+                    
             <RolePermissionCreateButton buttonTitle={buttonTitle} pageNumber={pageNumber} modalInputStatus={modalInputStatus} />
-             
-
-        
+            
           
         </div>
       </>
