@@ -28,6 +28,31 @@ export const login = createAsyncThunk(
     }
 )
 
+
+//User LogOut 
+export const logOutDataFetch = createAsyncThunk(
+    'authenticationSlice/logOut',
+    async()=>{
+        try{
+            const res = await axiosInstance().post(`${process.env.baseUrl}/logout/`);
+            Cookies.remove('passport_backend')
+            Cookies.remove('user_info')
+            //Router.replace("/login");
+            window.location = "/login";
+           
+            //console.log("token", res)
+            return res.data;
+
+        }catch(e){
+
+            //console.log("login usere ERror",e.response)
+            return e.response;
+        }
+    }
+)
+
+
+
 //Admin User List with Pagination and related role and permission
 export const AdminUserListData = createAsyncThunk(
     'authenticationSlice/AdminUserListData',
@@ -46,6 +71,8 @@ export const AdminUserListData = createAsyncThunk(
         }
     }
 )
+
+
 
 //Admin User List with out Pagination 
 export const AdminUserListWithOutPagination = createAsyncThunk(

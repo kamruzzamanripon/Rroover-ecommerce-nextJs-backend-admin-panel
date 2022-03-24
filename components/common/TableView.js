@@ -1,6 +1,7 @@
 import Table from 'rc-table';
 import React, { useEffect, useState } from 'react';
 import Pagination from "react-js-pagination";
+import { can } from '../../utils/permissionHook';
 import ShortViewModal from './ShortViewModal';
 
 
@@ -97,9 +98,9 @@ const TableView = ({tableDataInfo, setPageNumber, pageNumber, tableMode}) => {
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
           render: (data) => <>
-                          <a href="#" onClick={()=>viewInfoHandler(data)}>View</a> | 
-                          <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> | 
-                          <a href="#" onClick={()=>viewInfoDeleteHandler(data)}>Delete</a>
+                          <a href="#" onClick={()=>viewInfoHandler(data)}>View</a>  
+                          {can('brand.update') || can('subcategory.update') ? <> | <a href="#" onClick={()=>viewInfoEditHandler(data)}>Edit</a> </> : ''}
+                          {can('brand.delete') || can('subcategory.delete') ? <> | <a href="#" onClick={()=>viewInfoDeleteHandler(data)}>Delete</a> </> : ''}
                         </>,
           
         },

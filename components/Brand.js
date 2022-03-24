@@ -13,10 +13,12 @@ const Brand = () => {
     const dispatch = useDispatch();
     const brandData = useSelector((state)=>state?.store?.brand?.items);
     const LoadingStatus = useSelector((state)=>state?.store?.brand?.loading);
-    const confirmationMessage = useSelector((state)=>state.store.brand.item.message);
+    const confirmationMessage = useSelector((state)=>state?.store?.brand?.item?.message);
     const serverError = useSelector((state)=>state?.store?.brand?.item?.errors);
 
+    
 
+  // console.log("userPermissionList", can("category.update"))
   //Default Dispatch BrandAll
   useEffect(()=>{
     dispatch(brandAllWithPagination(pageNumber))

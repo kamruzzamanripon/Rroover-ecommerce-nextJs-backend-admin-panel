@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { can } from '../../utils/permissionHook';
 import ProductInputModal from '../product/ProductInputModal';
 import InputModal from './InputModal';
-import RolePermissionInputModal from './RolePermissionInputModal';
 
 const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, modalInputStatus}) => {
 
@@ -17,7 +17,9 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
         </div>
   
         <div className="flex flex-wrap items-start justify-end -mb-3">
-          <button
+          {/* For Permission Control */}
+          {can('brand.create') ? 
+            <button
             className="inline-flex px-5 py-3 text-white bg-purple-600 hover:bg-purple-700 focus:bg-purple-700 rounded-md ml-6 mb-3"
             onClick={() => setModal(true)}
           >
@@ -37,25 +39,10 @@ const PageComponentTitle = ({title, titleDescription, buttonTitle, pageNumber, m
             </svg>
             {buttonTitle}
           </button>
+          : ""}
+          
 
-          {/* {modalInputStatus === 'productAdd' ? 
-              //Product input Modal
-              <ProductInputModal 
-                modal={modal} 
-                setModal={setModal} 
-                inputStatus={modalInputStatus}
-                pageNumber={pageNumber}
-              />
-              :
-              //Common input Modal
-              <InputModal 
-                modal={modal} 
-                setModal={setModal} 
-                inputStatus={modalInputStatus}
-                pageNumber={pageNumber}
-              />
-        } */}
-
+      
         { modalInputStatus === 'category' || modalInputStatus === 'subCategory' || modalInputStatus === 'brand' || modalInputStatus === 'banner' ?
           <InputModal 
           modal={modal} 

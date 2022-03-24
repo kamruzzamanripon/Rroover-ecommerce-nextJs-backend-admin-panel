@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminUserListData } from '../redux/data_fetch/authenticationDataFetch';
+import { resetRoleSliceItem } from '../redux/store_slices/roleSlice';
 import LoadingStatusBar from './common/LoadingStatusBar';
 import RolePermissionComponentTitle from './common/RolePermissionComponentTitle';
 import RoleAssignTableView from './roleAssign/RoleAssignTableView';
@@ -10,7 +11,7 @@ const RoleAssign = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const dispatch = useDispatch();
     const roleData = useSelector((state)=>state.store.userinfo.userList);
-    const confirmationMessage = useSelector((state)=>state?.store?.userinfo?.userList?.message);
+    const confirmationMessage = useSelector((state)=>state?.store?.role?.item?.message);
     const serverError = useSelector((state)=>state?.store?.role?.item?.errors);
     const LoadingStatus = useSelector((state)=>state?.store?.role?.loading);
 
@@ -26,8 +27,8 @@ const RoleAssign = () => {
       toast("Role succesfully Assign")
       dispatch(resetRoleSliceItem())
     }
-    if(confirmationMessage === 'Role succesfully Update'){
-      toast("Role succesfully Update")
+    if(confirmationMessage === 'Role Assign Change succesfully'){
+      toast("Role Assign Change succesfully")
       dispatch(resetRoleSliceItem())
     }
     
@@ -47,7 +48,7 @@ const RoleAssign = () => {
           <RolePermissionComponentTitle 
               title='User List and Role Assign'
               titleDescription='List, view and edit'
-              buttonTitle='Create new Role'
+              buttonTitle='New Role Assign'
               pageNumber={pageNumber}
               modalInputStatus='roleAssign'
           />

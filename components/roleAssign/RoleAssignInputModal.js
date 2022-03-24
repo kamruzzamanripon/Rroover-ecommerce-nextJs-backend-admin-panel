@@ -107,7 +107,7 @@ useEffect(() => {
           {inputStatus === 'roleAssignEdit' ?
               (<input 
               className="border-2 border-purple-600/50 w-[75%] "
-              defaultValue={dataInfo?.roles ? dataInfo?.roles[0]?.id : ''}
+              defaultValue={dataInfo ? dataInfo?.id : ''}
               type="hidden" 
               {...register("Id")}
             />) : ''
